@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		968078361FAAF63E00F8DB27 /* PanoramaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078351FAAF63E00F8DB27 /* PanoramaView.swift */; };
+		968078381FAAFE0600F8DB27 /* PanoramaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */; };
 		96DC780E1F9C73620003B621 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DC780D1F9C73620003B621 /* AppDelegate.swift */; };
 		96DC78101F9C73620003B621 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DC780F1F9C73620003B621 /* ViewController.swift */; };
 		96DC78131F9C73620003B621 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96DC78111F9C73620003B621 /* Main.storyboard */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		968078351FAAF63E00F8DB27 /* PanoramaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanoramaView.swift; sourceTree = "<group>"; };
+		968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoramaViewController.swift; sourceTree = "<group>"; };
 		96DC780A1F9C73620003B621 /* cylindricalimage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cylindricalimage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DC780D1F9C73620003B621 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96DC780F1F9C73620003B621 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +105,8 @@
 			children = (
 				96DC780D1F9C73620003B621 /* AppDelegate.swift */,
 				96DC780F1F9C73620003B621 /* ViewController.swift */,
+				968078351FAAF63E00F8DB27 /* PanoramaView.swift */,
+				968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */,
 				96DDB7531FA5AF230092C467 /* PhotoViewController.swift */,
 				96DC78111F9C73620003B621 /* Main.storyboard */,
 				96DC78141F9C73620003B621 /* Assets.xcassets */,
@@ -264,7 +270,9 @@
 			files = (
 				96DC78101F9C73620003B621 /* ViewController.swift in Sources */,
 				96DC780E1F9C73620003B621 /* AppDelegate.swift in Sources */,
+				968078381FAAFE0600F8DB27 /* PanoramaViewController.swift in Sources */,
 				96DDB7541FA5AF230092C467 /* PhotoViewController.swift in Sources */,
+				968078361FAAF63E00F8DB27 /* PanoramaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

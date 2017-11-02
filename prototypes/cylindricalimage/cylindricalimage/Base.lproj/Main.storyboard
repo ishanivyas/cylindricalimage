@@ -75,6 +75,24 @@
             </objects>
             <point key="canvasLocation" x="1855.072463768116" y="106.79347826086958"/>
         </scene>
+        <!--Panorama View Controller-->
+        <scene sceneID="4aW-Z7-9SF">
+            <objects>
+                <viewController storyboardIdentifier="PanoViewC" id="Ogg-Dw-aV3" customClass="PanoramaViewController" customModule="cylindricalimage" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RSF-n8-ptZ" customClass="PanoramaView" customModule="cylindricalimage" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="VZQ-En-b19"/>
+                    </view>
+                    <connections>
+                        <outlet property="panorama" destination="RSF-n8-ptZ" id="667-jx-Q3t"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aHF-gP-sWX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1171" y="796"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="OOH-v3-ta8">
             <objects>
