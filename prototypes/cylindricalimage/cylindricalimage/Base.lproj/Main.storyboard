@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--0-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="cylindricalimage" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,13 +19,25 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bBG-HW-UC9">
+                    <navigationItem key="navigationItem" title="0" id="bBG-HW-UC9">
+                        <barButtonItem key="leftBarButtonItem" title="Done" id="cLc-kF-BjR">
+                            <connections>
+                                <action selector="doneTakingPhotos:" destination="BYZ-38-t0r" id="hQL-Bf-dIZ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="camera" id="Krz-Xd-6sH">
                             <connections>
                                 <action selector="takePhoto:" destination="BYZ-38-t0r" id="t4J-6v-vs3"/>
                             </connections>
                         </barButtonItem>
+                        <connections>
+                            <outlet property="leftBarButtonItem" destination="cLc-kF-BjR" id="eJg-hP-es1"/>
+                            <outlet property="rightBarButtonItem" destination="Krz-Xd-6sH" id="MHi-XS-5hB"/>
+                        </connections>
                     </navigationItem>
+                    <connections>
+                        <outlet property="navBar" destination="bBG-HW-UC9" id="ZLO-ad-F0i"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
