@@ -1,21 +1,11 @@
-//
-//  PhotoViewController.swift
-//  cylindricalimage
-//
-//  Created by Ishani Vyas on 10/28/17.
-//  Copyright © 2017 Ishani Vyas. All rights reserved.
-//
-
 import UIKit
 
 class PhotoViewController: UIViewController {
-
     var takenPhoto:UIImage?
     
     @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if let availableImage = takenPhoto {
             imageView.image = availableImage
         }
@@ -28,7 +18,6 @@ class PhotoViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -39,5 +28,4 @@ class PhotoViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }

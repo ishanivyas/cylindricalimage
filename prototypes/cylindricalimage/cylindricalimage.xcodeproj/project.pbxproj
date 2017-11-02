@@ -101,11 +101,11 @@
 			children = (
 				96DC780D1F9C73620003B621 /* AppDelegate.swift */,
 				96DC780F1F9C73620003B621 /* ViewController.swift */,
+				96DDB7531FA5AF230092C467 /* PhotoViewController.swift */,
 				96DC78111F9C73620003B621 /* Main.storyboard */,
 				96DC78141F9C73620003B621 /* Assets.xcassets */,
 				96DC78161F9C73620003B621 /* LaunchScreen.storyboard */,
 				96DC78191F9C73620003B621 /* Info.plist */,
-				96DDB7531FA5AF230092C467 /* PhotoViewController.swift */,
 			);
 			path = cylindricalimage;
 			sourceTree = "<group>";

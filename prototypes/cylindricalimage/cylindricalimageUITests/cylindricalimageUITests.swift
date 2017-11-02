@@ -1,18 +1,9 @@
-//
-//  cylindricalimageUITests.swift
-//  cylindricalimageUITests
-//
-//  Created by Ishani Vyas on 10/21/17.
-//  Copyright © 2017 Ishani Vyas. All rights reserved.
-//
-
 import XCTest
 
 class cylindricalimageUITests: XCTestCase {
         
     override func setUp() {
         super.setUp()
-        
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         // In UI tests it is usually best to stop immediately when a failure occurs.

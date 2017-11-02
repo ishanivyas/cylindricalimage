@@ -1,11 +1,3 @@
-//
-//  cylindricalimageTests.swift
-//  cylindricalimageTests
-//
-//  Created by Ishani Vyas on 10/21/17.
-//  Copyright © 2017 Ishani Vyas. All rights reserved.
-//
-
 import XCTest
 @testable import cylindricalimage
 
