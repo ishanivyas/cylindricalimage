@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9624EBBC1FAE861300925B89 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBBB1FAE861300925B89 /* main.cpp */; };
+		9624EBC01FAE864600925B89 /* Stitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 968FA0011FAD1FD500315F1E /* Stitcher.cpp */; };
+		9624EBC11FAE865800925B89 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F9FFC1FAD11B900315F1E /* opencv2.framework */; };
 		968078361FAAF63E00F8DB27 /* PanoramaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078351FAAF63E00F8DB27 /* PanoramaView.swift */; };
 		968078381FAAFE0600F8DB27 /* PanoramaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */; };
 		968F9FFD1FAD11B900315F1E /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F9FFC1FAD11B900315F1E /* opencv2.framework */; };
@@ -38,7 +41,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		9624EBB71FAE861300925B89 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9624EBB91FAE861300925B89 /* testStitcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = testStitcher; sourceTree = BUILT_PRODUCTS_DIR; };
+		9624EBBB1FAE861300925B89 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9624EBC21FAE92DD00925B89 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		968078351FAAF63E00F8DB27 /* PanoramaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanoramaView.swift; sourceTree = "<group>"; };
 		968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoramaViewController.swift; sourceTree = "<group>"; };
 		968F9FFC1FAD11B900315F1E /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = cylindricalimage/ios/opencv2.framework; sourceTree = "<group>"; };
@@ -63,6 +81,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9624EBB61FAE861300925B89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9624EBC11FAE865800925B89 /* opencv2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		96DC78071F9C73620003B621 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -88,6 +114,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9624EBBA1FAE861300925B89 /* testStitcher */ = {
+			isa = PBXGroup;
+			children = (
+				9624EBC21FAE92DD00925B89 /* data */,
+				9624EBBB1FAE861300925B89 /* main.cpp */,
+			);
+			path = testStitcher;
+			sourceTree = "<group>";
+		};
 		96DC78011F9C73620003B621 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +130,7 @@
 				968F9FFC1FAD11B900315F1E /* opencv2.framework */,
 				96DC78211F9C73620003B621 /* cylindricalimageTests */,
 				96DC782C1F9C73620003B621 /* cylindricalimageUITests */,
+				9624EBBA1FAE861300925B89 /* testStitcher */,
 				96DC780B1F9C73620003B621 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,6 +141,7 @@
 				96DC780A1F9C73620003B621 /* cylindricalimage.app */,
 				96DC781E1F9C73620003B621 /* cylindricalimageTests.xctest */,
 				96DC78291F9C73620003B621 /* cylindricalimageUITests.xctest */,
+				9624EBB91FAE861300925B89 /* testStitcher */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +187,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9624EBB81FAE861300925B89 /* testStitcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9624EBBF1FAE861300925B89 /* Build configuration list for PBXNativeTarget "testStitcher" */;
+			buildPhases = (
+				9624EBB51FAE861300925B89 /* Sources */,
+				9624EBB61FAE861300925B89 /* Frameworks */,
+				9624EBB71FAE861300925B89 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = testStitcher;
+			productName = testStitcher;
+			productReference = 9624EBB91FAE861300925B89 /* testStitcher */;
+			productType = "com.apple.product-type.tool";
+		};
 		96DC78091F9C73620003B621 /* cylindricalimage */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 96DC78321F9C73620003B621 /* Build configuration list for PBXNativeTarget "cylindricalimage" */;
@@ -213,6 +267,10 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Ishani Vyas";
 				TargetAttributes = {
+					9624EBB81FAE861300925B89 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
 					96DC78091F9C73620003B621 = {
 						CreatedOnToolsVersion = 9.0.1;
 						LastSwiftMigration = 0910;
@@ -246,6 +304,7 @@
 				96DC78091F9C73620003B621 /* cylindricalimage */,
 				96DC781D1F9C73620003B621 /* cylindricalimageTests */,
 				96DC78281F9C73620003B621 /* cylindricalimageUITests */,
+				9624EBB81FAE861300925B89 /* testStitcher */,
 			);
 		};
 /* End PBXProject section */
@@ -278,6 +337,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9624EBB51FAE861300925B89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9624EBBC1FAE861300925B89 /* main.cpp in Sources */,
+				9624EBC01FAE864600925B89 /* Stitcher.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		96DC78061F9C73620003B621 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -342,6 +410,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		9624EBBD1FAE861300925B89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5BHY958BAG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cylindricalimage/ios",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9624EBBE1FAE861300925B89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5BHY958BAG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/cylindricalimage/ios",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		96DC78301F9C73620003B621 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -565,6 +665,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9624EBBF1FAE861300925B89 /* Build configuration list for PBXNativeTarget "testStitcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9624EBBD1FAE861300925B89 /* Debug */,
+				9624EBBE1FAE861300925B89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		96DC78051F9C73620003B621 /* Build configuration list for PBXProject "cylindricalimage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
