@@ -63,7 +63,7 @@
 		9624EBC51FB02EA400925B89 /* UIImage+cvMat.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "UIImage+cvMat.h"; sourceTree = "<group>"; };
 		9624EBC61FB02F7900925B89 /* StitcherWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StitcherWrapper.h; sourceTree = "<group>"; };
 		9624EBC71FB02FAB00925B89 /* StitcherWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StitcherWrapper.cpp; sourceTree = "<group>"; };
-		9624EBCA1FB0331600925B89 /* OCVStitcher.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = OCVStitcher.mm; path = ../OCVStitcher.mm; sourceTree = "<group>"; };
+		9624EBCA1FB0331600925B89 /* OCVStitcher.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OCVStitcher.mm; sourceTree = "<group>"; };
 		965EBE581FB033C8004BDF01 /* OCVStitcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCVStitcher.h; sourceTree = "<group>"; };
 		965EBE591FB03A14004BDF01 /* SwiftStitch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftStitch-Bridging-Header.h"; sourceTree = "<group>"; };
 		968078351FAAF63E00F8DB27 /* PanoramaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanoramaView.swift; sourceTree = "<group>"; };

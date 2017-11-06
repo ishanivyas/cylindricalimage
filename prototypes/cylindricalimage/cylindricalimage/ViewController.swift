@@ -131,6 +131,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         DispatchQueue.main.async {
             self.present(PanoViewC, animated: true, completion: {
                 PanoViewC.panorama.image = image
+                PanoViewC.panorama.panoramaType = PanoramaType.spherical
+                PanoViewC.panorama.controlMethod = PanoramaControlMethod.motion
                 self.stopCaptureSession()
             })
         }
