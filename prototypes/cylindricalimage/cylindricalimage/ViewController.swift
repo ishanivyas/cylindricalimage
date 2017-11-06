@@ -112,28 +112,28 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
 
     func showStitchedImage(_ image:UIImage!) {
-        let PhotoViewC = UIStoryboard(
-            name: "Main", bundle: nil
-        ).instantiateViewController(withIdentifier: "PhotoViewC") as! PhotoViewController
-        PhotoViewC.takenPhoto = image
-        DispatchQueue.main.async {
-            self.present(PhotoViewC, animated: true, completion: {
-                //PhotoViewC.takenPhoto = image
-                self.stopCaptureSession()
-            })
-        }
-
-//        // Display image that was just captured.
-//        let PanoViewC = UIStoryboard(
+//        let PhotoViewC = UIStoryboard(
 //            name: "Main", bundle: nil
-//        ).instantiateViewController(withIdentifier: "PanoViewC") as! PanoramaViewController
-//
+//        ).instantiateViewController(withIdentifier: "PhotoViewC") as! PhotoViewController
+//        PhotoViewC.takenPhoto = image
 //        DispatchQueue.main.async {
-//            self.present(PanoViewC, animated: true, completion: {
-//                PanoViewC.panorama.image = image
+//            self.present(PhotoViewC, animated: true, completion: {
+//                //PhotoViewC.takenPhoto = image
 //                self.stopCaptureSession()
 //            })
 //        }
+
+        // Display image that was just captured.
+        let PanoViewC = UIStoryboard(
+            name: "Main", bundle: nil
+        ).instantiateViewController(withIdentifier: "PanoViewC") as! PanoramaViewController
+
+        DispatchQueue.main.async {
+            self.present(PanoViewC, animated: true, completion: {
+                PanoViewC.panorama.image = image
+                self.stopCaptureSession()
+            })
+        }
     }
 
     /*-

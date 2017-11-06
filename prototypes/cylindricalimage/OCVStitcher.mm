@@ -8,7 +8,7 @@
 #import "OCVStitcher.h"
 #import "StitcherWrapper.h"
 
-#define COMPRESS_RATIO 0.2
+#define COMPRESS_RATIO 0.95
 
 @implementation OCVStitcher
 + (UIImage *)stitch:(NSArray*)images {
