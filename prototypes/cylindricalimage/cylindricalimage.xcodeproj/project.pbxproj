@@ -10,10 +10,12 @@
 		9624EBBC1FAE861300925B89 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBBB1FAE861300925B89 /* main.cpp */; };
 		9624EBC01FAE864600925B89 /* Stitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 968FA0011FAD1FD500315F1E /* Stitcher.cpp */; };
 		9624EBC11FAE865800925B89 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F9FFC1FAD11B900315F1E /* opencv2.framework */; };
+		9624EBC41FB02A1E00925B89 /* UIImage+cvMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBC31FB02A1E00925B89 /* UIImage+cvMat.mm */; };
+		9624EBC81FB02FAB00925B89 /* StitcherWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBC71FB02FAB00925B89 /* StitcherWrapper.cpp */; };
+		9624EBCB1FB0331600925B89 /* OCVStitcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBCA1FB0331600925B89 /* OCVStitcher.mm */; };
 		968078361FAAF63E00F8DB27 /* PanoramaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078351FAAF63E00F8DB27 /* PanoramaView.swift */; };
 		968078381FAAFE0600F8DB27 /* PanoramaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */; };
 		968F9FFD1FAD11B900315F1E /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F9FFC1FAD11B900315F1E /* opencv2.framework */; };
-		968FA0031FAD1FD500315F1E /* Stitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 968FA0011FAD1FD500315F1E /* Stitcher.cpp */; };
 		96DC780E1F9C73620003B621 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DC780D1F9C73620003B621 /* AppDelegate.swift */; };
 		96DC78101F9C73620003B621 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DC780F1F9C73620003B621 /* ViewController.swift */; };
 		96DC78131F9C73620003B621 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96DC78111F9C73620003B621 /* Main.storyboard */; };
@@ -57,6 +59,13 @@
 		9624EBB91FAE861300925B89 /* testStitcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = testStitcher; sourceTree = BUILT_PRODUCTS_DIR; };
 		9624EBBB1FAE861300925B89 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9624EBC21FAE92DD00925B89 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		9624EBC31FB02A1E00925B89 /* UIImage+cvMat.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+cvMat.mm"; sourceTree = "<group>"; };
+		9624EBC51FB02EA400925B89 /* UIImage+cvMat.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = "UIImage+cvMat.h"; sourceTree = "<group>"; };
+		9624EBC61FB02F7900925B89 /* StitcherWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StitcherWrapper.h; sourceTree = "<group>"; };
+		9624EBC71FB02FAB00925B89 /* StitcherWrapper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StitcherWrapper.cpp; sourceTree = "<group>"; };
+		9624EBCA1FB0331600925B89 /* OCVStitcher.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = OCVStitcher.mm; path = ../OCVStitcher.mm; sourceTree = "<group>"; };
+		965EBE581FB033C8004BDF01 /* OCVStitcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCVStitcher.h; sourceTree = "<group>"; };
+		965EBE591FB03A14004BDF01 /* SwiftStitch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftStitch-Bridging-Header.h"; sourceTree = "<group>"; };
 		968078351FAAF63E00F8DB27 /* PanoramaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanoramaView.swift; sourceTree = "<group>"; };
 		968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanoramaViewController.swift; sourceTree = "<group>"; };
 		968F9FFC1FAD11B900315F1E /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = cylindricalimage/ios/opencv2.framework; sourceTree = "<group>"; };
@@ -153,6 +162,13 @@
 				96DC780F1F9C73620003B621 /* ViewController.swift */,
 				968078351FAAF63E00F8DB27 /* PanoramaView.swift */,
 				968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */,
+				965EBE591FB03A14004BDF01 /* SwiftStitch-Bridging-Header.h */,
+				965EBE581FB033C8004BDF01 /* OCVStitcher.h */,
+				9624EBCA1FB0331600925B89 /* OCVStitcher.mm */,
+				9624EBC51FB02EA400925B89 /* UIImage+cvMat.h */,
+				9624EBC31FB02A1E00925B89 /* UIImage+cvMat.mm */,
+				9624EBC61FB02F7900925B89 /* StitcherWrapper.h */,
+				9624EBC71FB02FAB00925B89 /* StitcherWrapper.cpp */,
 				968F9FFE1FAD1C1700315F1E /* stitching_multiple.py */,
 				968FA0011FAD1FD500315F1E /* Stitcher.cpp */,
 				968FA0021FAD1FD500315F1E /* Stitcher.hpp */,
@@ -350,12 +366,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9624EBCB1FB0331600925B89 /* OCVStitcher.mm in Sources */,
+				9624EBC41FB02A1E00925B89 /* UIImage+cvMat.mm in Sources */,
 				96DC78101F9C73620003B621 /* ViewController.swift in Sources */,
 				96DC780E1F9C73620003B621 /* AppDelegate.swift in Sources */,
+				9624EBC81FB02FAB00925B89 /* StitcherWrapper.cpp in Sources */,
 				968078381FAAFE0600F8DB27 /* PanoramaViewController.swift in Sources */,
 				96DDB7541FA5AF230092C467 /* PhotoViewController.swift in Sources */,
 				968078361FAAF63E00F8DB27 /* PanoramaView.swift in Sources */,
-				968FA0031FAD1FD500315F1E /* Stitcher.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,7 +584,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.cylindricalimage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "cylindricalimage/cylindricalimage-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "cylindricalimage/SwiftStitch-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -590,7 +608,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.cylindricalimage;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "cylindricalimage/cylindricalimage-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "cylindricalimage/SwiftStitch-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

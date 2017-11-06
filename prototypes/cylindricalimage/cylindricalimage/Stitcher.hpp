@@ -2,7 +2,11 @@
 #define Stitcher_hpp
 
 #include <vector>
-#include "opencv2/opencv.hpp"
+//-#include "opencv2/opencv.hpp"
+namespace cv {
+    class Mat; class Point2f; class KeyPoint; class DMatch;
+    class InputArray; class OutputArray;
+}
 
 namespace Stitcher {
     typedef std::vector<std::vector<cv::DMatch> > DescriptorMatches;

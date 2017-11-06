@@ -58,7 +58,7 @@ void Stitcher::warpTwoImages(cv::InputArray img1, cv::InputArray img2, cv::Mat &
     double max_x = w1, max_y = h1,
            min_x = 0,  min_y = 0;
     for(int i = 0; i < 4; i++) {
-        double py = pts2_in_perspective.at<double>(i,0); // row / y
+        double py = pts2_in_perspective.at<double>(i,0); // row / y (does Mat.at(..) use 0 == row index and 1 == col??)
         double px = pts2_in_perspective.at<double>(i,1); // col / x
         if(px < min_x) min_x = px;  if(py < min_y) min_y = py;
         if(px > max_x) max_x = px;  if(py > max_y) max_y = py;
@@ -77,6 +77,9 @@ void Stitcher::warpTwoImages(cv::InputArray img1, cv::InputArray img2, cv::Mat &
     // Translate and warp img2 so that its pixels align with img1.
     cv::Mat warped;
     cv::warpPerspective(img2, warped, T*H, cv::Size(max_x - min_x, max_y - min_y));
+    char fname[] = {'d','a','t','a','/','w','\0','.','j','p','g','\0'};
+    fname[6] = '0' + n;
+    cv::imwrite(fname, warped);
 
     // Copy the pixels of img1 over warped-img2
     img1.copyTo(warped(cv::Rect(-min_x, -min_y, w1, h1)));
@@ -108,12 +111,20 @@ void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv
 
 void Stitcher::stitch(Mats &images, cv::Mat &pano) {
     images[0].copyTo(pano);
+    cv::imwrite("data/p1.jpg", pano);
     int i = 0;
     for(auto img : images) {
         if (++i == 1) continue;
+        std::cout << "\n\nStiching image " << i << " into pano:";
         cv::Mat H;
         findHomographyMatrix(pano, img, H);
         if (H.empty()) continue;    // Failed to find homography; omit the image.
+        std::cout << "\n\tFound homography.\n\tMerging new image to pano.";
         warpTwoImages(pano, img, H, pano, i);
+        std::cout << "\n\tImage merged.";
+        char fname[] = {'d','a','t','a','/','p','\0','.','j','p','g','\0'};
+        fname[6] = '0' + i;
+        cv::imwrite(fname, pano);
     }
+    std::cout << "\n\nPano complete.\n\n";
 }

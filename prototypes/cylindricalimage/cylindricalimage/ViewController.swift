@@ -56,8 +56,8 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
 
     @IBAction func doneTakingPhotos(_ sender: Any) {
-        //TODO// Call the stitcher
-        let img = self.images[0]    //TODO// remove this once the stitcher starts returning results
+        // Call the stitcher
+        let img = OCVStitcher.stitch((self.images as [UIImage]) as [Any])
 
         // We are done with the images.
         images = Array<UIImage>()
@@ -112,18 +112,28 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     }
 
     func showStitchedImage(_ image:UIImage!) {
-        // Display image that was just captured.
-        let PanoViewC = UIStoryboard(
+        let PhotoViewC = UIStoryboard(
             name: "Main", bundle: nil
-        ).instantiateViewController(withIdentifier: "PanoViewC") as! PanoramaViewController
-
+        ).instantiateViewController(withIdentifier: "PhotoViewC") as! PhotoViewController
+        PhotoViewC.takenPhoto = image
         DispatchQueue.main.async {
-            self.present(PanoViewC, animated: true, completion: {
+            self.present(PhotoViewC, animated: true, completion: {
+                //PhotoViewC.takenPhoto = image
                 self.stopCaptureSession()
-                //-PanoViewC.panorama.image = UIImage(named: "spherical")
-                PanoViewC.panorama.image = image
             })
         }
+
+//        // Display image that was just captured.
+//        let PanoViewC = UIStoryboard(
+//            name: "Main", bundle: nil
+//        ).instantiateViewController(withIdentifier: "PanoViewC") as! PanoramaViewController
+//
+//        DispatchQueue.main.async {
+//            self.present(PanoViewC, animated: true, completion: {
+//                PanoViewC.panorama.image = image
+//                self.stopCaptureSession()
+//            })
+//        }
     }
 
     /*-
