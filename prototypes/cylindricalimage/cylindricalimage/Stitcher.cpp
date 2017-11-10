@@ -120,7 +120,7 @@ void Stitcher::stitch(Mats &images, cv::Mat &pano) {
         findHomographyMatrix(pano, img, H);
         if (H.empty()) continue;    // Failed to find homography; omit the image.
         std::cout << "\n\tFound homography.\n\tMerging new image to pano.";
-        warpTwoImages(pano, img, H, pano, i);
+        warpTwoImages(img, pano, H, pano, i);
         std::cout << "\n\tImage merged.";
         char fname[] = {'d','a','t','a','/','p','\0','.','j','p','g','\0'};
         fname[6] = '0' + i;
