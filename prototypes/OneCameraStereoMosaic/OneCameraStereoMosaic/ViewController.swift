@@ -146,8 +146,8 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
             return
         }
 
-        //-left.append(images![0])
-        //-right.append(images![1])
+        left.append(images![0])
+        right.append(images![1])
 
         self.scanView?.left = images![0]
         self.scanView?.right = images![1]
@@ -170,56 +170,28 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     // two images.
     // CMSampleBuffer --> CVPixelBuffer --> CIImage --> CGImage --> UIImage
     func getImagesFromSampleBuffer(buffer:CMSampleBuffer) -> [UIImage]? {
-        #if false
-            if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
-                let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-                let context = CIContext()
-                
-                let bw = band_width
-                let offset = 64
-                let w = CVPixelBufferGetWidth(pixelBuffer)
-                let h = CVPixelBufferGetHeight(pixelBuffer)
-                let xl = offset
-                let xr = w - offset - bw
-                let y = 0
-                
-                let leftBand = CGRect(x: 0, y: xl, width: h, height: bw)
-                let rightBand = CGRect(x: 0, y: xr, width: h, height: bw)
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
+            let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+            let context = CIContext()
 
-                let leftCGImage = context.createCGImage(ciImage, from: leftBand)
-                let rightCGImage = context.createCGImage(ciImage, from: rightBand)
-                if leftCGImage != nil && rightCGImage != nil {
-                    let leftUIImage = UIImage(cgImage: leftCGImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.right)
-                    let rightUIImage = UIImage(cgImage: rightCGImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.right)
-                    return [leftUIImage, rightUIImage]
-                }
-            }
-            return nil
-        #endif
-        #if true
-            if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
-                let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-                let context = CIContext()
-
-                let w = Double(CVPixelBufferGetWidth(pixelBuffer))
-                let h = Double(CVPixelBufferGetHeight(pixelBuffer))
-                #if true
-                    let cgImage = context.createCGImage(ciImage,
-                                                        from: CGRect(x:0.0, y:0.0, width:w, height:h))
-                    let uiImage = UIImage(cgImage: cgImage!)
-                #elseif false
-                    let uiImage = UIImage(ciImage: ciImage)
-                #elseif false
-                    let cgImage = context.createCGImage(ciImage,
-                                                        from: CGRect(x:0.0, y:0.0, width:w, height:h))
-                    let uiImage = UIImage(cgImage: cgImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
-                #elseif false
-                    let uiImage = UIImage(ciImage: ciImage, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
-                #endif
-                return [getLeftBand(uiImage), getRightBand(uiImage)]
-            }
-            return nil
-        #endif
+            let w = Double(CVPixelBufferGetWidth(pixelBuffer))
+            let h = Double(CVPixelBufferGetHeight(pixelBuffer))
+            #if true
+                let cgImage = context.createCGImage(ciImage,
+                                                    from: CGRect(x:0.0, y:0.0, width:w, height:h))
+                let uiImage = UIImage(cgImage: cgImage!)
+            #elseif false
+                let uiImage = UIImage(ciImage: ciImage)
+            #elseif false
+                let cgImage = context.createCGImage(ciImage,
+                                                    from: CGRect(x:0.0, y:0.0, width:w, height:h))
+                let uiImage = UIImage(cgImage: cgImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
+            #elseif false
+                let uiImage = UIImage(ciImage: ciImage, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
+            #endif
+            return [getLeftBand(uiImage), getRightBand(uiImage)]
+        }
+        return nil
     }
 
     func getLeftBand(_ image:UIImage) -> UIImage {
