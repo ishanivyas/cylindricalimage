@@ -15,6 +15,7 @@
 		96092F3B1FB8DD6300415B4C /* ScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F391FB8DD6300415B4C /* ScanView.swift */; };
 		96092F3C1FB8DD6300415B4C /* PreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F3A1FB8DD6300415B4C /* PreView.swift */; };
 		96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */; };
+		96092F401FB9079E00415B4C /* PortraitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F3F1FB9079E00415B4C /* PortraitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		96092F391FB8DD6300415B4C /* ScanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanView.swift; sourceTree = "<group>"; };
 		96092F3A1FB8DD6300415B4C /* PreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreView.swift; sourceTree = "<group>"; };
 		96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "xImage+pixels.swift"; sourceTree = "<group>"; };
+		96092F3F1FB9079E00415B4C /* PortraitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				96092F271FB8DCE900415B4C /* AppDelegate.swift */,
+				96092F3F1FB9079E00415B4C /* PortraitView.swift */,
 				96092F291FB8DCE900415B4C /* ViewController.swift */,
 				96092F3A1FB8DD6300415B4C /* PreView.swift */,
 				96092F391FB8DD6300415B4C /* ScanView.swift */,
@@ -148,6 +151,7 @@
 				96092F2A1FB8DCE900415B4C /* ViewController.swift in Sources */,
 				96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */,
 				96092F281FB8DCE900415B4C /* AppDelegate.swift in Sources */,
+				96092F401FB9079E00415B4C /* PortraitView.swift in Sources */,
 				96092F3C1FB8DD6300415B4C /* PreView.swift in Sources */,
 				96092F3B1FB8DD6300415B4C /* ScanView.swift in Sources */,
 			);
@@ -223,7 +227,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -274,7 +278,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

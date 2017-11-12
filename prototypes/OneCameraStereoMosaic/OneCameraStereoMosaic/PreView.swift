@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class PreView : UIViewController {
+class PreView : PortraitViewController {
     var leftImage: UIImage?
     var rightImage: UIImage?
     @IBOutlet weak var leftImageView: UIImageView!

@@ -1,7 +1,7 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     let band_width = 64
 
     var previewLayer:CALayer!
@@ -55,6 +55,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     // imagery into the UI.
     func startPreview() {
         if let layer = AVCaptureVideoPreviewLayer(session: captureSession) {
+            layer.videoGravity = AVLayerVideoGravityResizeAspect
             self.previewLayer = layer
             self.view.layer.addSublayer(self.previewLayer)
             self.previewLayer.frame = self.view.layer.frame
@@ -145,11 +146,11 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
             return
         }
 
-        left.append(images![0])
-        right.append(images![1])
+        //-left.append(images![0])
+        //-right.append(images![1])
 
-        self.scanView?.left = self.left.last!
-        self.scanView?.right = self.right.last!
+        self.scanView?.left = images![0]
+        self.scanView?.right = images![1]
 
         // Keep statistics on inter-frame delay
         nFrames = nFrames + 1
@@ -168,63 +169,82 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     // Get the sequences of left-images and right images and stitch then into
     // two images.
     // CMSampleBuffer --> CVPixelBuffer --> CIImage --> CGImage --> UIImage
-    func getImagesFromSampleBuffer (buffer:CMSampleBuffer) -> [UIImage]? {
-        #if true
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
-            let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-            let context = CIContext()
-            
-            let bw = band_width
-            let offset = 64
-            let w = CVPixelBufferGetWidth(pixelBuffer)
-            let h = CVPixelBufferGetHeight(pixelBuffer)
-            let xl = offset
-            let xr = w - offset - bw
-            let y = 0
-            
-            let leftBand = CGRect(x: xl, y: y, width: bw, height: h)
-            let rightBand = CGRect(x: xr, y: y, width: bw, height: h)
-
-            let leftCGImage = context.createCGImage(ciImage, from: leftBand)
-            let rightCGImage = context.createCGImage(ciImage, from: rightBand)
-            if leftCGImage != nil && rightCGImage != nil {
-                let leftUIImage = UIImage(cgImage: leftCGImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.right)
-                let rightUIImage = UIImage(cgImage: rightCGImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.right)
-                return [leftUIImage, rightUIImage]
-            }
-        }
-        return nil
-        #endif
-
+    func getImagesFromSampleBuffer(buffer:CMSampleBuffer) -> [UIImage]? {
         #if false
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
-            let w = CVPixelBufferGetWidth(pixelBuffer)
-            let h = CVPixelBufferGetHeight(pixelBuffer)
-            let r = CVPixelBufferGetBytesPerRow(pixelBuffer)
-            let bytesPerPixel = r/w
-
-
-            let buffer = CVPixelBufferGetBaseAddress(pixelBuffer)
-            UIGraphicsBeginImageContext(CGSize(width: w, height:h))
-            let context = UIGraphicsGetCurrentContext()
-            if let data = context?.data {
-                data.copyBytes(from: buffer!, count: w*h*4) // Error: found nil
-            }
-            let img = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            if img != nil {
+            if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
+                let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+                let context = CIContext()
+                
                 let bw = band_width
                 let offset = 64
+                let w = CVPixelBufferGetWidth(pixelBuffer)
+                let h = CVPixelBufferGetHeight(pixelBuffer)
                 let xl = offset
                 let xr = w - offset - bw
-                let leftBand = CGRect(x: xl, y: 0, width: bw, height: h)
-                let rightBand = CGRect(x: xr, y: 0, width: bw, height: h)
-                return [UIImage(cgImage: (img!.cgImage?.cropping(to: leftBand))!),
-                        UIImage(cgImage: (img!.cgImage?.cropping(to: rightBand))!)]
+                let y = 0
+                
+                let leftBand = CGRect(x: 0, y: xl, width: h, height: bw)
+                let rightBand = CGRect(x: 0, y: xr, width: h, height: bw)
+
+                let leftCGImage = context.createCGImage(ciImage, from: leftBand)
+                let rightCGImage = context.createCGImage(ciImage, from: rightBand)
+                if leftCGImage != nil && rightCGImage != nil {
+                    let leftUIImage = UIImage(cgImage: leftCGImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.right)
+                    let rightUIImage = UIImage(cgImage: rightCGImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.right)
+                    return [leftUIImage, rightUIImage]
+                }
             }
-        }
-        return nil
+            return nil
         #endif
+        #if true
+            if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
+                let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+                let context = CIContext()
+
+                let w = Double(CVPixelBufferGetWidth(pixelBuffer))
+                let h = Double(CVPixelBufferGetHeight(pixelBuffer))
+                #if true
+                    let cgImage = context.createCGImage(ciImage,
+                                                        from: CGRect(x:0.0, y:0.0, width:w, height:h))
+                    let uiImage = UIImage(cgImage: cgImage!)
+                #elseif false
+                    let uiImage = UIImage(ciImage: ciImage)
+                #elseif false
+                    let cgImage = context.createCGImage(ciImage,
+                                                        from: CGRect(x:0.0, y:0.0, width:w, height:h))
+                    let uiImage = UIImage(cgImage: cgImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
+                #elseif false
+                    let uiImage = UIImage(ciImage: ciImage, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
+                #endif
+                return [getLeftBand(uiImage), getRightBand(uiImage)]
+            }
+            return nil
+        #endif
+    }
+
+    func getLeftBand(_ image:UIImage) -> UIImage {
+        let h = Double(image.cgImage!.height)
+        UIGraphicsBeginImageContext(CGSize(width:h, height:64.0))
+        image.draw(at: CGPoint(x: 0, y: -64.0))
+        let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        let unrotated:UIImage = UIImage(cgImage: cropped.cgImage!, scale: cropped.scale, orientation: UIImageOrientation.up)
+        let rotated:UIImage = UIImage(cgImage: unrotated.cgImage!, scale: unrotated.scale, orientation: UIImageOrientation.right)
+        return rotated
+    }
+    
+    func getRightBand(_ image:UIImage) -> UIImage {
+        let w = Double(image.cgImage!.width)
+        let h = Double(image.cgImage!.height)
+        UIGraphicsBeginImageContext(CGSize(width:h, height:64.0))
+        image.draw(at: CGPoint(x: 0.0, y: w - 64.0))
+        let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        let unrotated:UIImage = UIImage(cgImage: cropped.cgImage!, scale: cropped.scale, orientation: UIImageOrientation.up)
+        let rotated:UIImage = UIImage(cgImage: unrotated.cgImage!, scale: unrotated.scale, orientation: UIImageOrientation.right)
+        return rotated
     }
     
     func stitchImages (_ images:Array<UIImage>) -> UIImage? {
