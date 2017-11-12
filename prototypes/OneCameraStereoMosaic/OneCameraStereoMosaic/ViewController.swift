@@ -225,7 +225,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     func getLeftBand(_ image:UIImage) -> UIImage {
         let h = Double(image.cgImage!.height)
         UIGraphicsBeginImageContext(CGSize(width:h, height:64.0))
-        image.draw(at: CGPoint(x: 0, y: -64.0))
+        image.draw(at: CGPoint(x: 0.0, y: -64.0))
         let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
@@ -238,7 +238,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         let w = Double(image.cgImage!.width)
         let h = Double(image.cgImage!.height)
         UIGraphicsBeginImageContext(CGSize(width:h, height:64.0))
-        image.draw(at: CGPoint(x: 0.0, y: w - 64.0))
+        image.draw(at: CGPoint(x: 0.0, y: 0.0))
         let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
