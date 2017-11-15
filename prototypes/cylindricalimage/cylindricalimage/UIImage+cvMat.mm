@@ -66,9 +66,8 @@
 
 - (cv::Mat)cvMat3 {
     cv::Mat result = [self cvMat];
-    cv::cvtColor(result , result , CV_RGBA2RGB);
+    cv::cvtColor(result, result, CV_RGBA2RGB);
     return result;
-    
 }
 
 -(cv::Mat)cvGrayscaleMat {

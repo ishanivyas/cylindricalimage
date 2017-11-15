@@ -2,7 +2,7 @@ import UIKit
 import AVFoundation
 
 class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-    let band_width = 64
+    let band_width = 256.0
 
     var previewLayer:CALayer!
     let captureSession = AVCaptureSession()
@@ -146,11 +146,20 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
             return
         }
 
-        left.append(images![0])
-        right.append(images![1])
-
-        self.scanView?.left = images![0]
-        self.scanView?.right = images![1]
+        let leftImg = images![0]
+        let rightImg = images![1]
+        
+        left.append(leftImg)
+        right.append(rightImg)
+  
+        describe(leftImg, "left:")
+        describe(rot90(leftImg), "rot90(left):")
+        let leftImgR = dup(rot90(dup(rot90(leftImg))))
+        let rightImgR = dup(rot90(dup(rot90(rightImg))))
+        describe(leftImgR, "dup(rot90(left)):")
+        
+        self.scanView?.left = rot90(leftImg)
+        self.scanView?.right = rot90(rightImg)
 
         // Keep statistics on inter-frame delay
         nFrames = nFrames + 1
@@ -196,38 +205,55 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
     func getLeftBand(_ image:UIImage) -> UIImage {
         let h = Double(image.cgImage!.height)
-        UIGraphicsBeginImageContext(CGSize(width:h, height:64.0))
-        image.draw(at: CGPoint(x: 0.0, y: -64.0))
+        UIGraphicsBeginImageContext(CGSize(width:h, height:band_width))
+        image.draw(at: CGPoint(x: 0.0, y: -band_width))
         let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
-        let unrotated:UIImage = UIImage(cgImage: cropped.cgImage!, scale: cropped.scale, orientation: UIImageOrientation.up)
-        let rotated:UIImage = UIImage(cgImage: unrotated.cgImage!, scale: unrotated.scale, orientation: UIImageOrientation.right)
-        return rotated
+        return cropped
     }
     
     func getRightBand(_ image:UIImage) -> UIImage {
         let w = Double(image.cgImage!.width)
         let h = Double(image.cgImage!.height)
-        UIGraphicsBeginImageContext(CGSize(width:h, height:64.0))
+        UIGraphicsBeginImageContext(CGSize(width:h, height:band_width))
         image.draw(at: CGPoint(x: 0.0, y: 0.0))
         let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
-        let unrotated:UIImage = UIImage(cgImage: cropped.cgImage!, scale: cropped.scale, orientation: UIImageOrientation.up)
+        return cropped
+    }
+    
+    func describe(_ image:UIImage, _ prefix:String) {
+        let h = image.cgImage!.height
+        let w = image.cgImage!.width
+        print("\(prefix) \(w) x \(h)")
+    }
+    
+    func dup(_ image:UIImage) -> UIImage {
+        let h = image.cgImage!.height
+        let w = image.cgImage!.width
+        UIGraphicsBeginImageContext(CGSize(width:w, height:h))
+        image.draw(at: CGPoint(x: 0.0, y: 0.0))
+        let result:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return result
+    }
+
+    func rot90(_ image:UIImage) -> UIImage {
+        let unrotated:UIImage = UIImage(cgImage: image.cgImage!, scale: image.scale, orientation: UIImageOrientation.up)
         let rotated:UIImage = UIImage(cgImage: unrotated.cgImage!, scale: unrotated.scale, orientation: UIImageOrientation.right)
         return rotated
     }
-    
+
     func stitchImages (_ images:Array<UIImage>) -> UIImage? {
-        let width = images.count * band_width
+        let width = images.count * Int(band_width)
         let height = images[0].cgImage?.height
 
         UIGraphicsBeginImageContext(CGSize(width:width, height:height!))
         var x = 0.0
         for img in images {
-            img.draw(at: CGPoint(x: x, y: 0))
-            x += Double(band_width)
+            print("Attaching img \(img.cgImage?.width) x \(img.cgImage?.height)")
+            img.draw(in: CGRect(x:x, y:0.0, width:Double((img.cgImage?.width)!), height:Double((img.cgImage?.height)!)))
+            x += band_width
         }
         let result:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
