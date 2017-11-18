@@ -73,6 +73,7 @@
 		968FA0001FAD1FD500315F1E /* cylindricalimage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cylindricalimage-Bridging-Header.h"; sourceTree = "<group>"; };
 		968FA0011FAD1FD500315F1E /* Stitcher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Stitcher.cpp; sourceTree = "<group>"; };
 		968FA0021FAD1FD500315F1E /* Stitcher.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Stitcher.hpp; sourceTree = "<group>"; };
+		96C396271FB7BBBB00719CC6 /* cvMat-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cvMat-utils.cpp"; sourceTree = "<group>"; };
 		96DC780A1F9C73620003B621 /* cylindricalimage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cylindricalimage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96DC780D1F9C73620003B621 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96DC780F1F9C73620003B621 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 				968F9FFE1FAD1C1700315F1E /* stitching_multiple.py */,
 				968FA0011FAD1FD500315F1E /* Stitcher.cpp */,
 				968FA0021FAD1FD500315F1E /* Stitcher.hpp */,
+				96C396271FB7BBBB00719CC6 /* cvMat-utils.cpp */,
 				968FA0001FAD1FD500315F1E /* cylindricalimage-Bridging-Header.h */,
 				96DDB7531FA5AF230092C467 /* PhotoViewController.swift */,
 				96DC78111F9C73620003B621 /* Main.storyboard */,
