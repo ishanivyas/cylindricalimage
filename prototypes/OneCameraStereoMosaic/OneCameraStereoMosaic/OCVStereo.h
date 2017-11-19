@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface OCVStereo : NSObject
 // Final external interface
 - (instancetype)initStripWidth:(int)band_width forScale:(float)scale;
-- (void)append:(UIImage*)src;
+- (float)append:(UIImage*)src;
 - (UIImage*)stitch;
 
 // Temporary(?) interface

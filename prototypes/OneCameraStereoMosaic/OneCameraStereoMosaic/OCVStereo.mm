@@ -1,7 +1,5 @@
 #import <vector>
-//-#import "opencv2/opencv.hpp"
-//-#import "opencv2/imgcodecs/ios.h"
-#import "opencv2/imgcodecs.hpp"
+#import "opencv2/opencv.hpp"
 
 #import "UIImage+cvMat.h"
 #import "UIImage+utils.h"
@@ -24,21 +22,28 @@
     return nil;
 }
 
-- (void)append:(UIImage*)src {
+- (float)append:(UIImage*)src {
     // Scale and save the images.
-    UIImage *lft = self->lastLeft = [self leftBandOf:src];
-    UIImage *slimg = [lft scaledBy:self->scale];
+    UIImage *lft = [self leftBandOf:src];
+    UIImage *l = self->lastLeft ? (self->lastLeft).copy : lft;
+    UIImage *slimg = (self->scale == 1.0) ? lft : [lft scaledBy:self->scale];
     if (slimg) {
         //TODO// test to see if the image is not different enough before keeping it.
         left.push_back(slimg.cvMat3.t());
     }
+    self->lastLeft = lft;
 
-    UIImage *rgt = self->lastRight = [self rightBandOf:src];
-    UIImage *srimg = [rgt scaledBy:self->scale];
+    UIImage *rgt = [self rightBandOf:src];
+    UIImage *r = self->lastRight ? (self->lastRight).copy : rgt;
+    UIImage *srimg = (self->scale == 1.0) ? rgt : [rgt scaledBy:self->scale];
     if (srimg) {
         //TODO// test to see if the image is not different enough before keeping it.
         right.push_back(srimg.cvMat3.t());
     }
+    self->lastRight = rgt;
+
+    return std::log2l(cv::norm(l.cvMat3, lft.cvMat3)
+                      + cv::norm(r.cvMat3, rgt.cvMat3));
 }
 
 - (UIImage*)stitch {

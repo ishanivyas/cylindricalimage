@@ -1,6 +1,4 @@
-#import "opencv2/stitching.hpp"
-//-#import "opencv2/imgcodecs/ios.h"
-#import "opencv2/imgcodecs.hpp"
+#import "opencv2/opencv.hpp"
 #import "UIImage+cvMat.h"
 
 @implementation UIImage (OpenCV)

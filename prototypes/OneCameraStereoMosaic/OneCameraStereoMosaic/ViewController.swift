@@ -11,6 +11,8 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     var dataOutput:AVCaptureVideoDataOutput!
     
     @IBOutlet var scanView : ScanView?
+    @IBOutlet var startButton : UIButton!
+    
     var started = false
     
     var nFrames : UInt64 = 0
@@ -20,7 +22,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.stereo = OCVStereo(stripWidth: 128, forScale: 0.995)
+        self.stereo = OCVStereo(stripWidth: 8, forScale: 0.995)
 
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availableDevices = AVCaptureDeviceDiscoverySession(
@@ -104,7 +106,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
             // the images we constructed.
             stopCapture()
             startPreview()
-
+            
             // Present some statistics and reset them for a new capture.
             avgInterFrameDelay_ns = avgInterFrameDelay_ns / (1+nFrames)
             print("Stopped capture after \(nFrames) frames")
@@ -123,12 +125,15 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
             PreView.rightImage = self.stereo.stitchRight()
 
             DispatchQueue.main.async {
+                self.startButton.titleLabel?.text = "Done"
                 self.present(PreView, animated: true, completion: {})
             }
 
             //TODO// save the images into a format that can be used by Google Cardboard.
         } else {
-            print("starting capture")
+            DispatchQueue.main.async {
+                self.startButton.titleLabel?.text = "Cap..."
+            }
             stopPreview()
             startCapture()
         }
@@ -140,12 +145,22 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         let uiImage = self.getImageFromSampleBuffer(buffer: sampleBuffer)!
 
         // Save the image into the stereo pair.
-        self.stereo.append(uiImage)
+        let delta = self.stereo.append(uiImage)
+        DispatchQueue.main.async {
+            let d = String(format: "%1.1f", delta)
+            let t = self.startButton.titleLabel?.text
+            if t != d {
+                self.startButton.titleLabel?.text = "\(d)"
+            }
+        }
 
         // Update the UI
-        self.scanView?.left = self.stereo.lastLeft()
-        self.scanView?.right = self.stereo.lastRight()
+        self.scanView?.left = rot90(dup(self.stereo.lastLeft()))
+        self.scanView?.right = rot90(dup(self.stereo.lastRight()))
 
+        DispatchQueue.main.async {
+            self.stereo.lastLeft()
+        }
         // Keep statistics on inter-frame delay
         nFrames = nFrames + 1
         let now_ns = mach_absolute_time()
@@ -194,8 +209,8 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     }
 
     func rot90(_ image:UIImage) -> UIImage {
-        let unrotated:UIImage = UIImage(cgImage: image.cgImage!, scale: image.scale, orientation: UIImageOrientation.up)
-        let rotated:UIImage = UIImage(cgImage: unrotated.cgImage!, scale: unrotated.scale, orientation: UIImageOrientation.right)
+        let unrotated:UIImage = UIImage(cgImage: image.cgImage!, scale: image.scale, orientation: UIImageOrientation.upMirrored)
+        let rotated:UIImage = UIImage(cgImage: unrotated.cgImage!, scale: unrotated.scale, orientation: UIImageOrientation.rightMirrored)
         return rotated
     }
 
