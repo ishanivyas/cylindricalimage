@@ -3,15 +3,14 @@ import AVFoundation
 
 class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
     let band_width = 256.0
-
+    var stereo : OCVStereo!
+    
     var previewLayer:CALayer!
     let captureSession = AVCaptureSession()
     var captureDevice:AVCaptureDevice!
     var dataOutput:AVCaptureVideoDataOutput!
     
     @IBOutlet var scanView : ScanView?
-    var left:Array<UIImage> = []
-    var right:Array<UIImage> = []
     var started = false
     
     var nFrames : UInt64 = 0
@@ -21,6 +20,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.stereo = OCVStereo(stripWidth: 128, forScale: 0.995)
 
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availableDevices = AVCaptureDeviceDiscoverySession(
@@ -113,17 +113,14 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
             avgInterFrameDelay_ns = 0
             maxInterFrameDelay_ns = 0
 
-            // Stitch the images
-            let leftImage = stitchImages(left)
-            let rightImage = stitchImages(right)
-
             // Show the two stitched images
             let PreView = UIStoryboard(
                 name: "Main", bundle: nil
             ).instantiateViewController(withIdentifier: "PreView") as! PreView
 
-            PreView.leftImage = leftImage
-            PreView.rightImage = rightImage
+            // Stitch the images
+            PreView.leftImage = self.stereo.stitchLeft()
+            PreView.rightImage = self.stereo.stitchRight()
 
             DispatchQueue.main.async {
                 self.present(PreView, animated: true, completion: {})
@@ -140,26 +137,14 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     // Function to accumulate images for later stitching.  We want to keep this
     // quick because we want low inter-frame delays.
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
-        // Get the photo from the session.
-        let images = self.getImagesFromSampleBuffer(buffer: sampleBuffer)
-        if images == nil {
-            return
-        }
+        let uiImage = self.getImageFromSampleBuffer(buffer: sampleBuffer)!
 
-        let leftImg = images![0]
-        let rightImg = images![1]
-        
-        left.append(leftImg)
-        right.append(rightImg)
-  
-        describe(leftImg, "left:")
-        describe(rot90(leftImg), "rot90(left):")
-        let leftImgR = dup(rot90(dup(rot90(leftImg))))
-        let rightImgR = dup(rot90(dup(rot90(rightImg))))
-        describe(leftImgR, "dup(rot90(left)):")
-        
-        self.scanView?.left = rot90(leftImg)
-        self.scanView?.right = rot90(rightImg)
+        // Save the image into the stereo pair.
+        self.stereo.append(uiImage)
+
+        // Update the UI
+        self.scanView?.left = self.stereo.lastLeft()
+        self.scanView?.right = self.stereo.lastRight()
 
         // Keep statistics on inter-frame delay
         nFrames = nFrames + 1
@@ -175,53 +160,23 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         //TODO// show positions user should move camera to for next photos.
     }
     
-    // Get the sequences of left-images and right images and stitch then into
-    // two images.
+    // Convert a CMSampleBuffer into a UIImage.
     // CMSampleBuffer --> CVPixelBuffer --> CIImage --> CGImage --> UIImage
-    func getImagesFromSampleBuffer(buffer:CMSampleBuffer) -> [UIImage]? {
+    func getImageFromSampleBuffer(buffer:CMSampleBuffer) -> UIImage? {
         if let pixelBuffer = CMSampleBufferGetImageBuffer(buffer) {
+            // Convert the buffer into a UIImage.
+            let wi = CVPixelBufferGetWidth(pixelBuffer) ; let w = Double(wi)
+            let hi = CVPixelBufferGetHeight(pixelBuffer); let h = Double(hi)
+            
             let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
             let context = CIContext()
-
-            let w = Double(CVPixelBufferGetWidth(pixelBuffer))
-            let h = Double(CVPixelBufferGetHeight(pixelBuffer))
-            #if true
-                let cgImage = context.createCGImage(ciImage,
-                                                    from: CGRect(x:0.0, y:0.0, width:w, height:h))
-                let uiImage = UIImage(cgImage: cgImage!)
-            #elseif false
-                let uiImage = UIImage(ciImage: ciImage)
-            #elseif false
-                let cgImage = context.createCGImage(ciImage,
-                                                    from: CGRect(x:0.0, y:0.0, width:w, height:h))
-                let uiImage = UIImage(cgImage: cgImage!, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
-            #elseif false
-                let uiImage = UIImage(ciImage: ciImage, scale: UIScreen.main.scale, orientation: UIImageOrientation.up)
-            #endif
-            return [getLeftBand(uiImage), getRightBand(uiImage)]
+            let cgImage = context.createCGImage(ciImage,
+                                                from: CGRect(x:0.0, y:0.0, width:w, height:h))
+            return UIImage(cgImage: cgImage!)
         }
         return nil
     }
 
-    func getLeftBand(_ image:UIImage) -> UIImage {
-        let h = Double(image.cgImage!.height)
-        UIGraphicsBeginImageContext(CGSize(width:h, height:band_width))
-        image.draw(at: CGPoint(x: 0.0, y: -band_width))
-        let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return cropped
-    }
-    
-    func getRightBand(_ image:UIImage) -> UIImage {
-        let w = Double(image.cgImage!.width)
-        let h = Double(image.cgImage!.height)
-        UIGraphicsBeginImageContext(CGSize(width:h, height:band_width))
-        image.draw(at: CGPoint(x: 0.0, y: 0.0))
-        let cropped:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return cropped
-    }
-    
     func describe(_ image:UIImage, _ prefix:String) {
         let h = image.cgImage!.height
         let w = image.cgImage!.width
@@ -245,30 +200,6 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     }
 
     func stitchImages (_ images:Array<UIImage>) -> UIImage? {
-        let width = images.count * Int(band_width)
-        let height = images[0].cgImage?.height
-
-        UIGraphicsBeginImageContext(CGSize(width:width, height:height!))
-        var x = 0.0
-        for img in images {
-            print("Attaching img \(img.cgImage?.width) x \(img.cgImage?.height)")
-            img.draw(in: CGRect(x:x, y:0.0, width:Double((img.cgImage?.width)!), height:Double((img.cgImage?.height)!)))
-            x += band_width
-        }
-        let result:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return result
+        return self.stereo.stitch()
     }
-
-    
-    /*-
-     override func viewDidLoad() {
-     super.viewDidLoad()
-     }
-     
-     override func didReceiveMemoryWarning() {
-     super.didReceiveMemoryWarning()
-     // Dispose of any resources that can be recreated.
-     }
-     -*/
 }

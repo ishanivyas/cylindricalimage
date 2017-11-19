@@ -16,6 +16,10 @@
 		96092F3C1FB8DD6300415B4C /* PreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F3A1FB8DD6300415B4C /* PreView.swift */; };
 		96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */; };
 		96092F401FB9079E00415B4C /* PortraitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96092F3F1FB9079E00415B4C /* PortraitView.swift */; };
+		96092F461FC019B400415B4C /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96092F451FC019B400415B4C /* opencv2.framework */; };
+		96092F4F1FC020FB00415B4C /* OCVStereo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F4E1FC020FB00415B4C /* OCVStereo.mm */; };
+		96092F521FC0223100415B4C /* UIImage+cvMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F501FC0223000415B4C /* UIImage+cvMat.mm */; };
+		96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F541FC10BBC00415B4C /* UIImage+utils.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,14 @@
 		96092F3A1FB8DD6300415B4C /* PreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreView.swift; sourceTree = "<group>"; };
 		96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "xImage+pixels.swift"; sourceTree = "<group>"; };
 		96092F3F1FB9079E00415B4C /* PortraitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortraitView.swift; sourceTree = "<group>"; };
+		96092F451FC019B400415B4C /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		96092F4C1FC020FB00415B4C /* SwiftStereo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SwiftStereo-Bridging-Header.h"; sourceTree = "<group>"; };
+		96092F4D1FC020FB00415B4C /* OCVStereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCVStereo.h; sourceTree = "<group>"; };
+		96092F4E1FC020FB00415B4C /* OCVStereo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OCVStereo.mm; sourceTree = "<group>"; };
+		96092F501FC0223000415B4C /* UIImage+cvMat.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+cvMat.mm"; sourceTree = "<group>"; };
+		96092F511FC0223000415B4C /* UIImage+cvMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+cvMat.h"; sourceTree = "<group>"; };
+		96092F531FC10BBC00415B4C /* UIImage+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+utils.h"; sourceTree = "<group>"; };
+		96092F541FC10BBC00415B4C /* UIImage+utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+utils.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96092F461FC019B400415B4C /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,10 +81,18 @@
 				96092F3A1FB8DD6300415B4C /* PreView.swift */,
 				96092F391FB8DD6300415B4C /* ScanView.swift */,
 				96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */,
+				96092F4D1FC020FB00415B4C /* OCVStereo.h */,
+				96092F4E1FC020FB00415B4C /* OCVStereo.mm */,
+				96092F4C1FC020FB00415B4C /* SwiftStereo-Bridging-Header.h */,
+				96092F511FC0223000415B4C /* UIImage+cvMat.h */,
+				96092F501FC0223000415B4C /* UIImage+cvMat.mm */,
+				96092F531FC10BBC00415B4C /* UIImage+utils.h */,
+				96092F541FC10BBC00415B4C /* UIImage+utils.mm */,
 				96092F2B1FB8DCE900415B4C /* Main.storyboard */,
 				96092F2E1FB8DCE900415B4C /* Assets.xcassets */,
 				96092F301FB8DCE900415B4C /* LaunchScreen.storyboard */,
 				96092F331FB8DCE900415B4C /* Info.plist */,
+				96092F451FC019B400415B4C /* opencv2.framework */,
 			);
 			path = OneCameraStereoMosaic;
 			sourceTree = "<group>";
@@ -149,9 +170,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96092F521FC0223100415B4C /* UIImage+cvMat.mm in Sources */,
 				96092F2A1FB8DCE900415B4C /* ViewController.swift in Sources */,
+				96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */,
 				96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */,
 				96092F281FB8DCE900415B4C /* AppDelegate.swift in Sources */,
+				96092F4F1FC020FB00415B4C /* OCVStereo.mm in Sources */,
 				96092F401FB9079E00415B4C /* PortraitView.swift in Sources */,
 				96092F3C1FB8DD6300415B4C /* PreView.swift in Sources */,
 				96092F3B1FB8DD6300415B4C /* ScanView.swift in Sources */,
@@ -291,13 +315,23 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5BHY958BAG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OneCameraStereoMosaic",
+				);
 				INFOPLIST_FILE = OneCameraStereoMosaic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.OneCameraStereoMosaic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "OneCameraStereoMosaic/SwiftStereo-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "${PRODUCT_MODULE_NAME}-Swift.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -307,13 +341,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5BHY958BAG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/OneCameraStereoMosaic",
+				);
 				INFOPLIST_FILE = OneCameraStereoMosaic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.OneCameraStereoMosaic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "OneCameraStereoMosaic/SwiftStereo-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "${PRODUCT_MODULE_NAME}-Swift.h";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

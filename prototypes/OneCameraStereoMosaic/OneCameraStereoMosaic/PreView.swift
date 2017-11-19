@@ -26,6 +26,13 @@ class PreView : PortraitViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         leftImageView.sizeToFit()
         rightImageView.sizeToFit()
+
+        var r = rightImageView.frame
+        r.origin.y = leftImageView.frame.size.height
+        rightImageView.frame = r
+
+        print("Left image view frame: \(leftImageView.frame)")
+        print("Right image view frame: \(rightImageView.frame)")
         //-scrollContent.sizeToFit()
         let size = CGSize(width: max((leftImage?.cgImage?.width)!,
                                      (rightImage?.cgImage?.width)!),

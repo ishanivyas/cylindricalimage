@@ -39,7 +39,7 @@ extension UIImage {
         return pixels
     }
 
-    static func from4(bytes b:UnsafeMutableRawPointer, width w:Int, height h:Int, _ bpp:Int) -> UIImage? {
+    static func from(bytes b:UnsafeMutableRawPointer, width w:Int, height h:Int, _ bpp:Int) -> UIImage? {
         let l          = w*h
         let data       = NSData(bytesNoCopy:b, length:l)
         let provider   = CGDataProvider(data: data)
@@ -48,8 +48,8 @@ extension UIImage {
             width:             w,
             height:            h,
             bitsPerComponent:  8,
-            bitsPerPixel:      32,
-            bytesPerRow:       4*w,
+            bitsPerPixel:      bpp,
+            bytesPerRow:       (bpp>>3)*w,
             space:             colorSpace,
             bitmapInfo:        CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
             provider:          provider!, // CGDataProviderRef
@@ -58,5 +58,36 @@ extension UIImage {
             intent:            CGColorRenderingIntent.defaultIntent
         )!;
         return UIImage(cgImage:image)
+    }
+
+    static func fromCopy(bytes b:UnsafeMutableRawPointer, width w:Int, height h:Int, _ bpp:Int) -> UIImage? {
+        let l          = w*h
+        let data       = NSData(bytes: b, length: l)
+        let provider   = CGDataProvider(data: data)
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let image      = CGImage(
+            width:             w,
+            height:            h,
+            bitsPerComponent:  8,
+            bitsPerPixel:      bpp,
+            bytesPerRow:       (bpp>>3)*w,
+            space:             colorSpace,
+            bitmapInfo:        CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue),
+            provider:          provider!, // CGDataProviderRef
+            decode:            nil,
+            shouldInterpolate: false,
+            intent:            CGColorRenderingIntent.defaultIntent
+            )!;
+        return UIImage(cgImage:image)
+    }
+    
+    func scaledBy(ratio r:CGFloat) -> UIImage? {
+        let scaledSize = CGSize(width:  r,
+                                height: r)
+        UIGraphicsBeginImageContext(scaledSize)
+        self.draw(in: CGRect(origin: CGPoint(x:0, y:0), size: scaledSize))
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage
     }
 }
