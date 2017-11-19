@@ -27,23 +27,40 @@
     UIImage *lft = [self leftBandOf:src];
     UIImage *l = self->lastLeft ? (self->lastLeft).copy : lft;
     UIImage *slimg = (self->scale == 1.0) ? lft : [lft scaledBy:self->scale];
-    if (slimg) {
-        //TODO// test to see if the image is not different enough before keeping it.
-        left.push_back(slimg.cvMat3.t());
+    if (!slimg) {
+        return 0.0;
     }
-    self->lastLeft = lft;
 
     UIImage *rgt = [self rightBandOf:src];
     UIImage *r = self->lastRight ? (self->lastRight).copy : rgt;
     UIImage *srimg = (self->scale == 1.0) ? rgt : [rgt scaledBy:self->scale];
-    if (srimg) {
-        //TODO// test to see if the image is not different enough before keeping it.
-        right.push_back(srimg.cvMat3.t());
+    if (!srimg) {
+        return 0.0;
     }
-    self->lastRight = rgt;
+    
+    // Test to see if the image is not different enough before keeping it.
+#   if 0
+    double d = std::log2l(cv::norm(l.cvMat3, lft.cvMat3)
+                          + cv::norm(r.cvMat3, rgt.cvMat3));
+    double n = std::log2l(cv::norm(l.cvMat3)
+                          + cv::norm(r.cvMat3));
+#   else
+    double d = cv::norm(l.cvMat3, lft.cvMat3) + cv::norm(r.cvMat3, rgt.cvMat3);
+    double n = l.size.width*l.size.height + r.size.width*r.size.height;
+#   endif
 
-    return std::log2l(cv::norm(l.cvMat3, lft.cvMat3)
-                      + cv::norm(r.cvMat3, rgt.cvMat3));
+    if ((d/n) < 0.15
+        && self->lastLeft
+        && self->lastRight) {
+        return 0.0;
+    }
+
+    // The change in view was signifcant enough to keep it.
+    left.push_back(slimg.cvMat3.t());
+    right.push_back(srimg.cvMat3.t());
+    self->lastLeft = lft;
+    self->lastRight = rgt;
+    return d / n;
 }
 
 - (UIImage*)stitch {

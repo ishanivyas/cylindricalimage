@@ -14,28 +14,45 @@ class PreView : PortraitViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.scrollView.delegate = self;
-        if self.leftImage != nil {
-            self.leftImageView.image = self.leftImage
-        }
-        if self.rightImage != nil {
-            self.rightImageView.image = self.rightImage
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        leftImageView.sizeToFit()
-        rightImageView.sizeToFit()
-        scrollContent.sizeToFit()
 
-        var r = rightImageView.frame
-        r.origin.y = leftImageView.frame.size.height
-        rightImageView.frame = r
+        if leftImage != nil {
+            leftImageView.image = leftImage
+            #if false
+//-             leftImageView.sizeToFit()
+            #elseif false
+                var l = rightImageView.frame
+                l.origin.x = 0
+                l.origin.y = 0
+                l.size.height = (leftImage?.size.height)!
+                l.size.width = (leftImage?.size.width)!
+                leftImageView.frame = l
+            #endif
+        }
+
+
+        if rightImage != nil {
+            rightImageView.image = rightImage
+            #if false
+//-             rightImageView.sizeToFit()
+            #elseif false
+                var r = rightImageView.frame
+                r.origin.x = 0
+                r.origin.y = leftImageView.frame.size.height
+                r.size.height = (rightImage?.size.height)!
+                r.size.width = (rightImage?.size.width)!
+                rightImageView.frame = r
+            #endif
+        }
 
         let size = CGSize(width: max((leftImage?.cgImage?.width)!,
                                      (rightImage?.cgImage?.width)!),
                           height: (leftImage?.cgImage?.height)!
                                   + (rightImage?.cgImage?.height)!)
+//-        scrollContent.sizeToFit()
         scrollView.contentSize = size
     }
 

@@ -22,7 +22,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.stereo = OCVStereo(stripWidth: 8, forScale: 0.995)
+        self.stereo = OCVStereo(stripWidth: 16, forScale: 0.995)
 
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availableDevices = AVCaptureDeviceDiscoverySession(
@@ -147,10 +147,10 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         // Save the image into the stereo pair.
         let delta = self.stereo.append(uiImage)
         DispatchQueue.main.async {
-            let d = String(format: "%1.1f", delta)
+            let d = String(format: "%1.3f", delta)
             let t = self.startButton.titleLabel?.text
             if t != d {
-                self.startButton.titleLabel?.text = "\(d)"
+                self.startButton.titleLabel?.text = d
             }
         }
 
