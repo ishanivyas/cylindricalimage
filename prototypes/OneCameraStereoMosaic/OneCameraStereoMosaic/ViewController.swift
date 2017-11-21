@@ -22,7 +22,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.stereo = OCVStereo(stripWidth: 16, forScale: 0.995)
+        self.stereo = OCVStereo(stripWidth: 2, forScale: 1.0)
 
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availableDevices = AVCaptureDeviceDiscoverySession(

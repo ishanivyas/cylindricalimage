@@ -22,7 +22,7 @@ class PreView : PortraitViewController, UIScrollViewDelegate {
         if leftImage != nil {
             leftImageView.image = leftImage
             #if false
-//-             leftImageView.sizeToFit()
+                leftImageView.sizeToFit()
             #elseif false
                 var l = rightImageView.frame
                 l.origin.x = 0
@@ -37,7 +37,7 @@ class PreView : PortraitViewController, UIScrollViewDelegate {
         if rightImage != nil {
             rightImageView.image = rightImage
             #if false
-//-             rightImageView.sizeToFit()
+                rightImageView.sizeToFit()
             #elseif false
                 var r = rightImageView.frame
                 r.origin.x = 0
