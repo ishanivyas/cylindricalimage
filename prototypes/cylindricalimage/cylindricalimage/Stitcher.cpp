@@ -75,7 +75,7 @@ void Stitcher::mergeImageIntoPano(cv::InputArray img, cv::InputArray pano,
 
 void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv::Mat &H) {
     // Find keypoints and their descriptors for each image using ORB.
-    cv::Ptr<cv::ORB> detector = cv::ORB::create(8000, 1.1414, 14);
+    cv::Ptr<cv::ORB> detector = cv::ORB::create(800, 1.1414, 14);
     KeyPoints kp1, kp2;
     cv::Mat des1, des2;
     detector->detectAndCompute(img1, /*mask:*/ cv::noArray(), kp1, des1);

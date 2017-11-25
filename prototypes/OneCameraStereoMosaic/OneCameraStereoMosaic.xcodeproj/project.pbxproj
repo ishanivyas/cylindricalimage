@@ -20,6 +20,7 @@
 		96092F4F1FC020FB00415B4C /* OCVStereo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F4E1FC020FB00415B4C /* OCVStereo.mm */; };
 		96092F521FC0223100415B4C /* UIImage+cvMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F501FC0223000415B4C /* UIImage+cvMat.mm */; };
 		96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F541FC10BBC00415B4C /* UIImage+utils.mm */; };
+		966DD1271FCA041E00A6CBF5 /* Stitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,8 @@
 		96092F511FC0223000415B4C /* UIImage+cvMat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+cvMat.h"; sourceTree = "<group>"; };
 		96092F531FC10BBC00415B4C /* UIImage+utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+utils.h"; sourceTree = "<group>"; };
 		96092F541FC10BBC00415B4C /* UIImage+utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+utils.mm"; sourceTree = "<group>"; };
+		966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stitcher.cpp; sourceTree = "<group>"; };
+		966DD1261FCA041E00A6CBF5 /* Stitcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stitcher.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +86,8 @@
 				96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */,
 				96092F4D1FC020FB00415B4C /* OCVStereo.h */,
 				96092F4E1FC020FB00415B4C /* OCVStereo.mm */,
+				966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */,
+				966DD1261FCA041E00A6CBF5 /* Stitcher.hpp */,
 				96092F4C1FC020FB00415B4C /* SwiftStereo-Bridging-Header.h */,
 				96092F511FC0223000415B4C /* UIImage+cvMat.h */,
 				96092F501FC0223000415B4C /* UIImage+cvMat.mm */,
@@ -175,6 +180,7 @@
 				96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */,
 				96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */,
 				96092F281FB8DCE900415B4C /* AppDelegate.swift in Sources */,
+				966DD1271FCA041E00A6CBF5 /* Stitcher.cpp in Sources */,
 				96092F4F1FC020FB00415B4C /* OCVStereo.mm in Sources */,
 				96092F401FB9079E00415B4C /* PortraitView.swift in Sources */,
 				96092F3C1FB8DD6300415B4C /* PreView.swift in Sources */,

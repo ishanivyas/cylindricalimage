@@ -4,12 +4,16 @@
 #import "UIImage+cvMat.h"
 #import "UIImage+utils.h"
 #import "OCVStereo.h"
+#include "Stitcher.hpp"
 
 @implementation OCVStereo {
-    std::vector<cv::Mat> left, right;
-    UIImage *lastLeft, *lastRight;
-    int band_width;
-    float scale;
+    std::vector<cv::Mat> left, right, Hs;   // Image strips and homographies.
+    cv::Mat last;                           // The last full image taken.
+    UIImage *lastLeft, *lastRight;          // For live previews.
+    UIImage *leftPano, *rightPano;          // The stitched panoramas.
+
+    int band_width;                         // The width of the image bands.
+    float scale;                            // The amount to rescale images by.
 }
 
 - (instancetype)initStripWidth:(int)band_width forScale:(float)scale {
@@ -56,10 +60,27 @@
     }
 
     // The change in view was signifcant enough to keep it.
+
+    // If this is not the first image, find a Homography that maps it to the
+    // last image.
+    cv::Mat next = src.cvMat3;
+    if (!last.empty()) {
+        cv::Mat H;
+        Stitcher::findHomographyMatrix(last, next, H);
+        if (H.empty()) return 0.0;
+        std::cout << H << std::endl;
+        Hs.push_back(H);
+    }
+    last = next; // Save the full image so we can calculate the next Homography.
+
+    // Save the image strip matrices for later stitching.
     left.push_back(slimg.cvMat3.t());
     right.push_back(srimg.cvMat3.t());
+    
+    // Save the un-scaled image strips for live previewing.
     self->lastLeft = lft;
     self->lastRight = rgt;
+
     return d / n;
 }
 
@@ -82,6 +103,64 @@
 
 - (UIImage*)stitchRight {
     return [self stitchSet:self->right];
+}
+
+- (UIImage *)leftPano {
+    return self->leftPano;
+}
+
+- (UIImage *)rightPano {
+    return self->rightPano;
+}
+
+static const char *type2depth(cv::Mat m) {
+    auto type = m.type();
+    uchar depth = type & CV_MAT_DEPTH_MASK;
+    switch ( depth ) {
+        case CV_8U:  return "CV_8U";
+        case CV_8S:  return "CV_8S";
+        case CV_16U: return "CV_16U";
+        case CV_16S: return "CV_16S";
+        case CV_32S: return "CV_32S";
+        case CV_32F: return "CV_32F";
+        case CV_64F: return "CV_64F";
+        default:     return "User";
+    }
+}
+
+static char type2chans(cv::Mat m) {
+    return '0' + 1 + (m.type() >> CV_CN_SHIFT);
+}
+
+#define desc(mtrx) do{std::cout << #mtrx " is " << type2depth(mtrx) << "C" << type2chans(mtrx) << " of size " << mtrx.size() << "(" << mtrx.rows << " x " << mtrx.cols << ")" << std::endl; }while(0)
+
+- (void)stitchPanos {
+    // Setup the first strip of each pano.
+    cv::Mat leftPanoM, rightPanoM;
+    right[0].copyTo(leftPanoM);
+    left[0].copyTo(rightPanoM);
+    cv::Mat H = cv::Mat::eye(3, 3, CV_64F);
+
+    // For each image:
+    //  find the Warp matrix (Translation*Homography) and the size of the resulting image.
+    //  warp the strip
+    //  copy the pano into the result
+    for(int i = 0; i < Hs.size(); i++) {
+        std::cout << Hs[i].rows << "x" << Hs[i].cols << std::endl;
+        H = Hs[i]; // The homographies from the full-size images
+        
+        cv::Mat lW, rW;         // Warps for the strips.
+        cv::Size lS, rS;        // Sizes for the merging of strips.
+        cv::Point lMIN, rMIN;   // Minima
+
+        Stitcher::findWarpSizeAndMin(leftPanoM, right[i+1], H, lW, lS, lMIN);
+        Stitcher::mergeImageIntoPano(leftPanoM, right[i+1], lW, lS, lMIN, leftPanoM);
+        
+        Stitcher::findWarpSizeAndMin(rightPanoM, left[i+1], H, rW, rS, rMIN);
+        Stitcher::mergeImageIntoPano(rightPanoM, left[i+1], rW, rS, rMIN, rightPanoM);
+    }
+    leftPano = [UIImage imageFrom:leftPanoM];
+    rightPano = [UIImage imageFrom:rightPanoM];
 }
 
 /* ************************************************************************** */
@@ -109,25 +188,23 @@
 }
 
 - (UIImage *)leftBandOf:(UIImage*)src {
-//    return [src clippedBy:CGRectMake(0,
-//                                     0,
-//                                     self->band_width,
-//                                     src.size.height)];
-    return [src clippedBy:CGRectMake(0,
-                                     0,
-                                     src.size.width,
-                                     self->band_width)];
+    // The camera always produces images in landscape coordinates, i.e. the
+    // x direction proceeds along the longest line.  We are taking the panorama
+    // in portrait mode, so the "bands" will come from along the "y" axis.
+    return [src clippedBy:CGRectMake(     /*x:*/0,
+                                          /*y:*/0,
+                                      /*width:*/src.size.width,
+                                     /*height:*/self->band_width)];
 }
 
 - (UIImage *)rightBandOf:(UIImage*)src {
-//    return [src clippedBy:CGRectMake(src.size.width - self->band_width,
-//                                     0,
-//                                     self->band_width,
-//                                     src.size.height)];
-    return [src clippedBy:CGRectMake(0,
-                                     src.size.height - self->band_width,
-                                     src.size.width,
-                                     self->band_width)];
+     // The camera always produces images in landscape coordinates, i.e. the
+    // x direction proceeds along the longest line.  We are taking the panorama
+    // in portrait mode, so the "bands" will come from along the "y" axis.
+    return [src clippedBy:CGRectMake(     /*x:*/0,
+                                          /*y:*/src.size.height - self->band_width,
+                                      /*width:*/src.size.width,
+                                     /*height:*/self->band_width)];
 }
 @end
 
