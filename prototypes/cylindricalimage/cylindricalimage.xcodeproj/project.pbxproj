@@ -13,6 +13,7 @@
 		9624EBC41FB02A1E00925B89 /* UIImage+cvMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBC31FB02A1E00925B89 /* UIImage+cvMat.mm */; };
 		9624EBC81FB02FAB00925B89 /* StitcherWrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBC71FB02FAB00925B89 /* StitcherWrapper.cpp */; };
 		9624EBCB1FB0331600925B89 /* OCVStitcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9624EBCA1FB0331600925B89 /* OCVStitcher.mm */; };
+		966DD1241FC9565500A6CBF5 /* Stitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 968FA0011FAD1FD500315F1E /* Stitcher.cpp */; };
 		968078361FAAF63E00F8DB27 /* PanoramaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078351FAAF63E00F8DB27 /* PanoramaView.swift */; };
 		968078381FAAFE0600F8DB27 /* PanoramaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968078371FAAFE0600F8DB27 /* PanoramaViewController.swift */; };
 		968F9FFD1FAD11B900315F1E /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968F9FFC1FAD11B900315F1E /* opencv2.framework */; };
@@ -370,6 +371,7 @@
 			files = (
 				9624EBCB1FB0331600925B89 /* OCVStitcher.mm in Sources */,
 				9624EBC41FB02A1E00925B89 /* UIImage+cvMat.mm in Sources */,
+				966DD1241FC9565500A6CBF5 /* Stitcher.cpp in Sources */,
 				96DC78101F9C73620003B621 /* ViewController.swift in Sources */,
 				96DC780E1F9C73620003B621 /* AppDelegate.swift in Sources */,
 				9624EBC81FB02FAB00925B89 /* StitcherWrapper.cpp in Sources */,

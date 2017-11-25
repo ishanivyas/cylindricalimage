@@ -4,6 +4,6 @@
 namespace cv { class Mat; }
 #include <vector>
 
-cv::Mat stitch(const std::vector<cv::Mat> images);
+cv::Mat stitch(std::vector<cv::Mat> images);
 
 #endif /* StitcherWrapper_h */
