@@ -25,4 +25,8 @@
 - (UIImage *)rotatedBy90:(int)n {
     return nil;
 }
+
+- (UIImage *)rotatedBy180:(int)n {
+    return nil;
+}
 @end
