@@ -17,4 +17,5 @@ static char type2chans(cv::Mat m) {
     return '0' + 1 + (m.type() >> CV_CN_SHIFT);
 }
 
-#define desc(m) do{std::cout << #m " is " << type2depth(m) << "C" << type2chans(m) << " of size " << m.size() << std::endl; }while(0)
+#define desc(mtrx) do{std::cout << #mtrx " is " << type2depth(mtrx) << "C" << type2chans(mtrx) << " of size " << mtrx.size() << "(" << mtrx.rows << " x " << mtrx.cols << ")" << std::endl; }while(0)
+
