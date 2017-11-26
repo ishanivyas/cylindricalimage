@@ -45,6 +45,7 @@
 		96092F541FC10BBC00415B4C /* UIImage+utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+utils.mm"; sourceTree = "<group>"; };
 		966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stitcher.cpp; sourceTree = "<group>"; };
 		966DD1261FCA041E00A6CBF5 /* Stitcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stitcher.hpp; sourceTree = "<group>"; };
+		966DD1281FCA3D2C00A6CBF5 /* cvMat-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cvMat-utils.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +90,7 @@
 				966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */,
 				966DD1261FCA041E00A6CBF5 /* Stitcher.hpp */,
 				96092F4C1FC020FB00415B4C /* SwiftStereo-Bridging-Header.h */,
+				966DD1281FCA3D2C00A6CBF5 /* cvMat-utils.cpp */,
 				96092F511FC0223000415B4C /* UIImage+cvMat.h */,
 				96092F501FC0223000415B4C /* UIImage+cvMat.mm */,
 				96092F531FC10BBC00415B4C /* UIImage+utils.h */,

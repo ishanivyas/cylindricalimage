@@ -7,8 +7,11 @@
 #include "Stitcher.hpp"
 
 @implementation OCVStereo {
-    std::vector<cv::Mat> left, right, Hs;   // Image strips and homographies.
+#   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
+    std::vector<cv::Mat> Hs;                // Homographies computed from full images.
     cv::Mat last;                           // The last full image taken.
+#   endif
+    std::vector<cv::Mat> left, right;       // Image strips.
     UIImage *lastLeft, *lastRight;          // For live previews.
     UIImage *leftPano, *rightPano;          // The stitched panoramas.
 
@@ -61,6 +64,7 @@
 
     // The change in view was signifcant enough to keep it.
 
+#   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
     // If this is not the first image, find a Homography that maps it to the
     // last image.
     cv::Mat next = src.cvMat3;
@@ -72,6 +76,7 @@
         Hs.push_back(H);
     }
     last = next; // Save the full image so we can calculate the next Homography.
+#   endif
 
     // Save the image strip matrices for later stitching.
     left.push_back(slimg.cvMat3.t());
@@ -113,28 +118,10 @@
     return self->rightPano;
 }
 
-static const char *type2depth(cv::Mat m) {
-    auto type = m.type();
-    uchar depth = type & CV_MAT_DEPTH_MASK;
-    switch ( depth ) {
-        case CV_8U:  return "CV_8U";
-        case CV_8S:  return "CV_8S";
-        case CV_16U: return "CV_16U";
-        case CV_16S: return "CV_16S";
-        case CV_32S: return "CV_32S";
-        case CV_32F: return "CV_32F";
-        case CV_64F: return "CV_64F";
-        default:     return "User";
-    }
-}
-
-static char type2chans(cv::Mat m) {
-    return '0' + 1 + (m.type() >> CV_CN_SHIFT);
-}
-
-#define desc(mtrx) do{std::cout << #mtrx " is " << type2depth(mtrx) << "C" << type2chans(mtrx) << " of size " << mtrx.size() << "(" << mtrx.rows << " x " << mtrx.cols << ")" << std::endl; }while(0)
+//-#include "cvMat-utils.cpp"
 
 - (void)stitchPanos {
+#   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
     // Setup the first strip of each pano.
     cv::Mat leftPanoM, rightPanoM;
     right[0].copyTo(leftPanoM);
@@ -159,6 +146,11 @@ static char type2chans(cv::Mat m) {
         Stitcher::findWarpSizeAndMin(rightPanoM, left[i+1], H, rW, rS, rMIN);
         Stitcher::mergeImageIntoPano(rightPanoM, left[i+1], rW, rS, rMIN, rightPanoM);
     }
+#   else
+    cv::Mat leftPanoM, rightPanoM;
+    Stitcher::stitch(left, rightPanoM);
+    Stitcher::stitch(right, leftPanoM);
+#   endif
     leftPano = [UIImage imageFrom:leftPanoM];
     rightPano = [UIImage imageFrom:rightPanoM];
 }
