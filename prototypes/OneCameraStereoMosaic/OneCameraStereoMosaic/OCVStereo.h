@@ -14,7 +14,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage*)stitch;
 - (UIImage*)lastLeft;
 - (UIImage*)lastRight;
-- (UIImage*)stitchLeft;
-- (UIImage*)stitchRight;
 @end
 NS_ASSUME_NONNULL_END

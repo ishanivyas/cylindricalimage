@@ -1,3 +1,5 @@
+#include "config.h"
+
 #import <vector>
 #import "opencv2/opencv.hpp"
 
@@ -6,11 +8,8 @@
 #import "OCVStereo.h"
 #include "Stitcher.hpp"
 
-//#define FULL_HOMOGRAPHY_APPLIED_TO_STRIPS 1
-//#define SKIP_MOTION_FROM_PHOTOMETRIC_NOISE 1
-
 @implementation OCVStereo {
-#   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
+#   if STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
     std::vector<cv::Mat> Hs;                // Homographies computed from full images.
     cv::Mat last;                           // The last full image taken.
 #   endif
@@ -49,10 +48,10 @@
     }
     
     // Test to see if the image is not different enough before keeping it.
-#   if defined(SKIP_MOTION_FROM_PHOTOMETRIC_NOISE)
+#   if defined(SKIP_FALSE_MOTION)
     double d = cv::norm(l.cvMat3, lft.cvMat3) + cv::norm(r.cvMat3, rgt.cvMat3);
     double n = l.size.width*l.size.height + r.size.width*r.size.height;
-#   if 0
+#   if defined(USE_LOG_OF_CHANGED_PIXELS_FOR_MOTION_DETECTION)
     d = std::log2l(d);
     n = std::log2l(cv::norm(l.cvMat3) + cv::norm(r.cvMat3));
 #   endif
@@ -66,7 +65,7 @@
     
     // The change in view was signifcant enough to keep it.
 
-#   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
+#   if STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
     // If this is not the first image, find a Homography that maps it to the
     // last image.
     cv::Mat next = src.cvMat3;
@@ -88,7 +87,7 @@
     self->lastLeft = lft;
     self->lastRight = rgt;
 
-#   if defined(SKIP_MOTION_FROM_PHOTOMETRIC_NOISE)
+#   if defined(SKIP_FALSE_MOTION)
     return d / n;
 #   else
     return 1.0;
@@ -108,14 +107,6 @@
     return self->lastRight;
 }
 
-- (UIImage*)stitchLeft {
-    return [self stitchSet:self->left];
-}
-
-- (UIImage*)stitchRight {
-    return [self stitchSet:self->right];
-}
-
 - (UIImage *)leftPano {
     return self->leftPano;
 }
@@ -127,14 +118,17 @@
 //-#include "cvMat-utils.cpp"
 
 - (void)stitchPanos {
-#   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
+#   if STITCHER == SIMPLE_STITCHER
+    leftPano = [self stitchSet:self->left];
+    rightPano = [self stitchSet:self->right];
+#   elif STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
     // Setup the first strip of each pano.
     cv::Mat leftPanoM, rightPanoM;
     right[0].copyTo(leftPanoM);
     left[0].copyTo(rightPanoM);
     cv::Mat H = cv::Mat::eye(3, 3, CV_64F);
 
-    // For each image:
+    // For each Homography i connecting image i to image i+1:
     //  find the Warp matrix (Translation*Homography) and the size of the resulting image.
     //  warp the strip
     //  copy the pano into the result
@@ -152,19 +146,24 @@
         Stitcher::findWarpSizeAndMin(rightPanoM, left[i+1], H, rW, rS, rMIN);
         Stitcher::mergeImageIntoPano(rightPanoM, left[i+1], rW, rS, rMIN, rightPanoM);
     }
-#   else
+    leftPano = [UIImage imageFrom:leftPanoM];
+    rightPano = [UIImage imageFrom:rightPanoM];
+#   elif STITCHER == PER_STRIP_HOMOGRAPHY_STITCHER || STITCHER == OPENCV_STITCHER
     cv::Mat leftPanoM, rightPanoM;
     Stitcher::stitch(left, rightPanoM);
     Stitcher::stitch(right, leftPanoM);
-#   endif
     leftPano = [UIImage imageFrom:leftPanoM];
     rightPano = [UIImage imageFrom:rightPanoM];
+#   endif
+
+    lastLeft = lastRight = nil;  // Recover some memory...
 }
 
 /* ************************************************************************** */
 /* Private                                                                    */
 /* ************************************************************************** */
 - (UIImage*)stitchSet:(std::vector<cv::Mat>)images {
+#   if STITCHER == SIMPLE_STITCHER
     // Build one big image from all the smaller ones.
     float width = images.size() * images[0].cols;
     float height = images[0].rows;
@@ -183,6 +182,9 @@
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return result;
+#   else
+    return nil;
+#   endif
 }
 
 - (UIImage *)leftBandOf:(UIImage*)src {

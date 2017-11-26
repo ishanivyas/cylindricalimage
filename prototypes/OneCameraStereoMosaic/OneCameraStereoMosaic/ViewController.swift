@@ -22,7 +22,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.stereo = OCVStereo(stripWidth: 64, forScale: 1.0)
+        self.stereo = OCVStereo(stripWidth: 8, forScale: 1.0)
 
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availableDevices = AVCaptureDeviceDiscoverySession(
@@ -121,12 +121,10 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
             ).instantiateViewController(withIdentifier: "PreView") as! PreView
 
             // Stitch the images
-//-            PreView.leftImage = self.stereo.stitchLeft()
-//-            PreView.rightImage = self.stereo.stitchRight()
             self.stereo.stitchPanos();
             PreView.leftImage = self.stereo.leftPano();
             PreView.rightImage = self.stereo.rightPano();
-
+                
             DispatchQueue.main.async {
                 self.startButton.titleLabel?.text = "Done"
                 self.present(PreView, animated: true, completion: {})

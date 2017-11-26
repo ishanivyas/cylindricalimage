@@ -1,7 +1,15 @@
-#include "Stitcher.hpp"
-#include <vector>
+#include "config.h"
 
+#if STITCHER == OPENCV_STITCHER
+#   include "opencv2/highgui/highgui.hpp"
+#   include "opencv2/stitching.hpp"
+#   include "opencv2/imgcodecs.hpp"
+#endif
+
+#include <vector>
 #include <iostream>
+
+#include "Stitcher.hpp"
 
 void Stitcher::filterMatchesAndExtractPoints(KeyPoints &kp1, KeyPoints &kp2, DescriptorMatches &matches, double threshold, ImgCoords &p1, ImgCoords &p2) {
     auto n = fmin(kp1.size(), kp2.size());
@@ -113,6 +121,15 @@ void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv
 }
 
 void Stitcher::stitch(Mats &images, cv::Mat &pano) {
+#   if STITCHER == OPENCV_STITCHER
+    cv::Mat result;
+    cv::Stitcher stitcher = cv::Stitcher::createDefault(false);
+    cv::Stitcher::Status status = stitcher.stitch(images, result);
+    if (status != cv::Stitcher::OK) {
+        return;
+    }
+    result.copyTo(pano);
+#   else
     images[0].copyTo(pano);
     int i = 0;
     for(auto img : images) {
@@ -125,4 +142,5 @@ void Stitcher::stitch(Mats &images, cv::Mat &pano) {
         findWarpSizeAndMin(img, pano, H, W, S, MIN);
         mergeImageIntoPano(img, pano, W, S, MIN, pano);
     }
+#   endif
 }
