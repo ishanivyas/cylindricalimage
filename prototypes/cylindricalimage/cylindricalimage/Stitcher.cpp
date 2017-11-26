@@ -7,7 +7,7 @@ void Stitcher::filterMatchesAndExtractPoints(KeyPoints &kp1, KeyPoints &kp2, Des
     auto n = fmin(kp1.size(), kp2.size());
     for(int i = 0; i < n; i++) {
         ImgCoord src = kp1[matches[i][0].queryIdx].pt,
-        dst = kp2[matches[i][0].trainIdx].pt;
+                 dst = kp2[matches[i][0].trainIdx].pt;
         //-auto diff = sqrt(fabs(src.x - dst.x) + fabs(src.y - dst.y));
         auto diff = fabs(src.y - dst.y);
         if (diff < threshold) {
@@ -66,7 +66,7 @@ void Stitcher::mergeImageIntoPano(cv::InputArray img, cv::InputArray pano,
     // Translate and warp pano so that its pixels align with img1.
     cv::Mat warped;
     cv::warpPerspective(pano, warped, W, S);
-    
+
     // Copy the pixels of img1 over warped-img2
     double wi = img.cols(), hi = img.rows();
     img.copyTo(warped(cv::Rect(-MIN.x, -MIN.y, wi, hi)));
@@ -74,22 +74,38 @@ void Stitcher::mergeImageIntoPano(cv::InputArray img, cv::InputArray pano,
 }
 
 void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv::Mat &H) {
-    // Find keypoints and their descriptors for each image using ORB.
-    cv::Ptr<cv::ORB> detector = cv::ORB::create(800, 1.1414, 14);
+    // Find keypoints and their descriptors for each image using ORB.               // Defaults:
+    cv::Ptr<cv::ORB> detector = cv::ORB::create(    /*nFeatures:*/800,              // 500
+                                                  /*scaleFactor:*/1.1414213,        // 1.2
+                                                      /*nlevels:*/14,                // 8
+                                                /*edgeThreshold:*/31,               // 31
+                                                   /*firstLevel:*/0,                // 0
+                                                        /*WTA_K:*/2,                // 2
+                                                    /*scoreType:*/cv::ORB::HARRIS_SCORE, // (same)
+                                                    /*patchSize:*/31/*(pixels)*/);  // 31
     KeyPoints kp1, kp2;
     cv::Mat des1, des2;
     detector->detectAndCompute(img1, /*mask:*/ cv::noArray(), kp1, des1);
     detector->detectAndCompute(img2, /*mask:*/ cv::noArray(), kp2, des2);
-    
+    if (des1.rows < 4 || des2.rows < 4) {
+        return;
+    }
+
     // Find correspondence between the descriptors using k-nearest-neighbors.
     cv::BFMatcher bf;
     DescriptorMatches matches;
-    bf.knnMatch(des1, des2, matches, 2);
-    
+    bf.knnMatch(des1, des2, matches, 3);
+    if (matches.size() < 4) {
+        return;
+    }
+
     // Filter the matches and extract their image coordinates.
     ImgCoords p1, p2;
     filterMatchesAndExtractPoints(kp1, kp2, matches, .4*img1.rows(), p1, p2);
-    
+    if (p1.size() < 4) {
+        return;
+    }
+
     H = cv::findHomography(p1, p2,
                            cv::RANSAC, /*RANSACreprojThresh:*/5.0
                            /*mask:cv::noArray()*/
@@ -110,3 +126,4 @@ void Stitcher::stitch(Mats &images, cv::Mat &pano) {
         mergeImageIntoPano(img, pano, W, S, MIN, pano);
     }
 }
+
