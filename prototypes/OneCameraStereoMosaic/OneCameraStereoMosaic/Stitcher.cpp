@@ -122,7 +122,7 @@ void Stitcher::stitch(Mats &images, cv::Mat &pano) {
         cv::Point MIN;
         findHomographyMatrix(pano, img, H);
         if (H.empty()) continue;    // Failed to find homography; omit the image.
-        findWarpSizeAndMin(pano, img, H, W, S, MIN);
-        mergeImageIntoPano(pano, img, W, S, MIN, pano);
+        findWarpSizeAndMin(img, pano, H, W, S, MIN);
+        mergeImageIntoPano(img, pano, W, S, MIN, pano);
     }
 }
