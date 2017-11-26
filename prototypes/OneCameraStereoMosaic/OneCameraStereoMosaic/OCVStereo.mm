@@ -6,6 +6,9 @@
 #import "OCVStereo.h"
 #include "Stitcher.hpp"
 
+//#define FULL_HOMOGRAPHY_APPLIED_TO_STRIPS 1
+//#define SKIP_MOTION_FROM_PHOTOMETRIC_NOISE 1
+
 @implementation OCVStereo {
 #   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
     std::vector<cv::Mat> Hs;                // Homographies computed from full images.
@@ -46,14 +49,12 @@
     }
     
     // Test to see if the image is not different enough before keeping it.
-#   if 0
-    double d = std::log2l(cv::norm(l.cvMat3, lft.cvMat3)
-                          + cv::norm(r.cvMat3, rgt.cvMat3));
-    double n = std::log2l(cv::norm(l.cvMat3)
-                          + cv::norm(r.cvMat3));
-#   else
+#   if defined(SKIP_MOTION_FROM_PHOTOMETRIC_NOISE)
     double d = cv::norm(l.cvMat3, lft.cvMat3) + cv::norm(r.cvMat3, rgt.cvMat3);
     double n = l.size.width*l.size.height + r.size.width*r.size.height;
+#   if 0
+    d = std::log2l(d);
+    n = std::log2l(cv::norm(l.cvMat3) + cv::norm(r.cvMat3));
 #   endif
 
     if ((d/n) < 0.15
@@ -61,7 +62,8 @@
         && self->lastRight) {
         return 0.0;
     }
-
+#   endif
+    
     // The change in view was signifcant enough to keep it.
 
 #   if defined(FULL_HOMOGRAPHY_APPLIED_TO_STRIPS)
@@ -86,7 +88,11 @@
     self->lastLeft = lft;
     self->lastRight = rgt;
 
+#   if defined(SKIP_MOTION_FROM_PHOTOMETRIC_NOISE)
     return d / n;
+#   else
+    return 1.0;
+#   endif
 }
 
 - (UIImage*)stitch {
