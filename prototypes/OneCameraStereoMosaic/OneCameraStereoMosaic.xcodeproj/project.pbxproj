@@ -21,7 +21,23 @@
 		96092F521FC0223100415B4C /* UIImage+cvMat.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F501FC0223000415B4C /* UIImage+cvMat.mm */; };
 		96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96092F541FC10BBC00415B4C /* UIImage+utils.mm */; };
 		966DD1271FCA041E00A6CBF5 /* Stitcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */; };
+		966DD12D1FCA888800A6CBF5 /* dtw.mm in Sources */ = {isa = PBXBuildFile; fileRef = 966DD12B1FCA888800A6CBF5 /* dtw.mm */; };
+		966DD16D1FCAA8A400A6CBF5 /* DTWTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 966DD12E1FCAA54D00A6CBF5 /* DTWTest.mm */; };
+		966DD1711FCAB09100A6CBF5 /* dtw.mm in Sources */ = {isa = PBXBuildFile; fileRef = 966DD12B1FCA888800A6CBF5 /* dtw.mm */; };
+		966DD1731FCB5DA400A6CBF5 /* UIImage_utilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 966DD1721FCB5DA400A6CBF5 /* UIImage_utilsTest.mm */; };
+		966DD1771FCB709500A6CBF5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966DD1751FCB707D00A6CBF5 /* CoreGraphics.framework */; };
+		966DD1781FCB709A00A6CBF5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966DD1761FCB707D00A6CBF5 /* UIKit.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		966DD16F1FCAAE9100A6CBF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96092F1C1FB8DCE900415B4C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96092F231FB8DCE900415B4C;
+			remoteInfo = OneCameraStereoMosaic;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		96092F241FB8DCE900415B4C /* OneCameraStereoMosaic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OneCameraStereoMosaic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,6 +63,14 @@
 		966DD1261FCA041E00A6CBF5 /* Stitcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stitcher.hpp; sourceTree = "<group>"; };
 		966DD1281FCA3D2C00A6CBF5 /* cvMat-utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cvMat-utils.cpp"; sourceTree = "<group>"; };
 		966DD12A1FCA604700A6CBF5 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		966DD12B1FCA888800A6CBF5 /* dtw.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = dtw.mm; sourceTree = "<group>"; };
+		966DD12C1FCA888800A6CBF5 /* dtw.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dtw.h; sourceTree = "<group>"; };
+		966DD12E1FCAA54D00A6CBF5 /* DTWTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DTWTest.mm; sourceTree = "<group>"; };
+		966DD1651FCAA88500A6CBF5 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		966DD1691FCAA88500A6CBF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		966DD1721FCB5DA400A6CBF5 /* UIImage_utilsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UIImage_utilsTest.mm; sourceTree = "<group>"; };
+		966DD1751FCB707D00A6CBF5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		966DD1761FCB707D00A6CBF5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +82,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		966DD1621FCAA88500A6CBF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966DD1771FCB709500A6CBF5 /* CoreGraphics.framework in Frameworks */,
+				966DD1781FCB709A00A6CBF5 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -65,7 +98,9 @@
 			isa = PBXGroup;
 			children = (
 				96092F261FB8DCE900415B4C /* OneCameraStereoMosaic */,
+				966DD1661FCAA88500A6CBF5 /* Tests */,
 				96092F251FB8DCE900415B4C /* Products */,
+				966DD1741FCB707D00A6CBF5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				96092F241FB8DCE900415B4C /* OneCameraStereoMosaic.app */,
+				966DD1651FCAA88500A6CBF5 /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,6 +123,8 @@
 				96092F391FB8DD6300415B4C /* ScanView.swift */,
 				96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */,
 				966DD12A1FCA604700A6CBF5 /* config.h */,
+				966DD12C1FCA888800A6CBF5 /* dtw.h */,
+				966DD12B1FCA888800A6CBF5 /* dtw.mm */,
 				96092F4D1FC020FB00415B4C /* OCVStereo.h */,
 				96092F4E1FC020FB00415B4C /* OCVStereo.mm */,
 				966DD1251FCA041E00A6CBF5 /* Stitcher.cpp */,
@@ -104,6 +142,25 @@
 				96092F451FC019B400415B4C /* opencv2.framework */,
 			);
 			path = OneCameraStereoMosaic;
+			sourceTree = "<group>";
+		};
+		966DD1661FCAA88500A6CBF5 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				966DD12E1FCAA54D00A6CBF5 /* DTWTest.mm */,
+				966DD1721FCB5DA400A6CBF5 /* UIImage_utilsTest.mm */,
+				966DD1691FCAA88500A6CBF5 /* Info.plist */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		966DD1741FCB707D00A6CBF5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				966DD1751FCB707D00A6CBF5 /* CoreGraphics.framework */,
+				966DD1761FCB707D00A6CBF5 /* UIKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,6 +183,24 @@
 			productReference = 96092F241FB8DCE900415B4C /* OneCameraStereoMosaic.app */;
 			productType = "com.apple.product-type.application";
 		};
+		966DD1641FCAA88500A6CBF5 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 966DD16A1FCAA88500A6CBF5 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				966DD1611FCAA88500A6CBF5 /* Sources */,
+				966DD1621FCAA88500A6CBF5 /* Frameworks */,
+				966DD1631FCAA88500A6CBF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				966DD1701FCAAE9100A6CBF5 /* PBXTargetDependency */,
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = 966DD1651FCAA88500A6CBF5 /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -140,6 +215,11 @@
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
+					};
+					966DD1641FCAA88500A6CBF5 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 96092F231FB8DCE900415B4C;
 					};
 				};
 			};
@@ -157,6 +237,7 @@
 			projectRoot = "";
 			targets = (
 				96092F231FB8DCE900415B4C /* OneCameraStereoMosaic */,
+				966DD1641FCAA88500A6CBF5 /* Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -172,6 +253,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		966DD1631FCAA88500A6CBF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -184,6 +272,7 @@
 				96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */,
 				96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */,
 				96092F281FB8DCE900415B4C /* AppDelegate.swift in Sources */,
+				966DD12D1FCA888800A6CBF5 /* dtw.mm in Sources */,
 				966DD1271FCA041E00A6CBF5 /* Stitcher.cpp in Sources */,
 				96092F4F1FC020FB00415B4C /* OCVStereo.mm in Sources */,
 				96092F401FB9079E00415B4C /* PortraitView.swift in Sources */,
@@ -192,7 +281,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		966DD1611FCAA88500A6CBF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966DD1731FCB5DA400A6CBF5 /* UIImage_utilsTest.mm in Sources */,
+				966DD16D1FCAA8A400A6CBF5 /* DTWTest.mm in Sources */,
+				966DD1711FCAB09100A6CBF5 /* dtw.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		966DD1701FCAAE9100A6CBF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96092F231FB8DCE900415B4C /* OneCameraStereoMosaic */;
+			targetProxy = 966DD16F1FCAAE9100A6CBF5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		96092F2B1FB8DCE900415B4C /* Main.storyboard */ = {
@@ -372,6 +479,38 @@
 			};
 			name = Release;
 		};
+		966DD16B1FCAA88500A6CBF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5BHY958BAG;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.OCSM.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OneCameraStereoMosaic.app/OneCameraStereoMosaic";
+			};
+			name = Debug;
+		};
+		966DD16C1FCAA88500A6CBF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5BHY958BAG;
+				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.berkeley.OCSM.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OneCameraStereoMosaic.app/OneCameraStereoMosaic";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -389,6 +528,15 @@
 			buildConfigurations = (
 				96092F371FB8DCE900415B4C /* Debug */,
 				96092F381FB8DCE900415B4C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		966DD16A1FCAA88500A6CBF5 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				966DD16B1FCAA88500A6CBF5 /* Debug */,
+				966DD16C1FCAA88500A6CBF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

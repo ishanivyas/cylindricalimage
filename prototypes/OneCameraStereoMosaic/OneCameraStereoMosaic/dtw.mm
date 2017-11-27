@@ -39,7 +39,9 @@ static inline int L2(unsigned *a, unsigned *b) {
     return d;
 }
 
-int dtw_distance(unsigned n, unsigned *x, unsigned *y) {
+int dtw_distance(unsigned n, unsigned *x, unsigned *y, unsigned b) {
+    if (b == 0) b = n;  // Sakoe-Chiba band limit.
+
     float *A = new float[n+1],
           *B = new float[n+1];
     float *D = B, *P = A;
@@ -49,12 +51,10 @@ int dtw_distance(unsigned n, unsigned *x, unsigned *y) {
 
     for (int i = 0; i <= n; i++) {
         D[0] = P[0] + L1(&x[i], &y[0]);
-        for (int j = 1; j <= n; j++) {
-            auto d = L1(&x[i], &y[j]);
-            D[j] = min(P[j-1] + d,
-                       P[j  ] + d,
-                       D[j-1] + d);
-        }
+        for (int j = max(1,i-b); j <= min(n,i+b); j++)
+            D[j] = L1(&x[i], &y[j]) + min(P[j-1],
+                                          P[j  ],
+                                          D[j-1]);
         auto T = P;
         P = D;
         D = T;

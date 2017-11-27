@@ -7,6 +7,7 @@
 #import "UIImage+utils.h"
 #import "OCVStereo.h"
 #include "Stitcher.hpp"
+#import "dtw.h"
 
 @implementation OCVStereo {
 #   if STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
@@ -14,6 +15,7 @@
     cv::Mat last;                           // The last full image taken.
 #   endif
     std::vector<cv::Mat> left, right;       // Image strips.
+    UIImage *lastLft, *lastRgt;             // For calculating alignment.
     UIImage *lastLeft, *lastRight;          // For live previews.
     UIImage *leftPano, *rightPano;          // The stitched panoramas.
 
@@ -79,7 +81,14 @@
     last = next; // Save the full image so we can calculate the next Homography.
 #   endif
 
-    // Save the image strip matrices for later stitching.
+    if (lastLft && lastRgt) {
+        auto lftDelta = [self align:slimg relativeTo:lastLft];
+        auto rgtDelta = [self align:srimg relativeTo:lastRgt];
+    }
+
+    // Save the image strips and their matrices for later stitching.
+    lastLft = slimg;
+    lastRgt = srimg;
     left.push_back(slimg.cvMat3.t());
     right.push_back(srimg.cvMat3.t());
     
@@ -206,5 +215,37 @@
                                       /*width:*/src.size.width,
                                      /*height:*/self->band_width)];
 }
+
+- (CGPoint)align:(UIImage*)b relativeTo:(UIImage*)a {
+    // The images arrive from the camera in Landscape mode but we are taking the
+    // pictures in portrain mode, so CGImageGetHeight actually gets a width and
+    // vice-versa.
+    unsigned long wai = CGImageGetHeight(a.CGImage),
+                  hai = CGImageGetWidth(a.CGImage),
+                  wbi = CGImageGetHeight(b.CGImage),
+                  hbi = CGImageGetWidth(b.CGImage);
+    float         wa  = a.size.height,
+                  ha  = a.size.width,
+                  wb  = b.size.height,
+                  hb  = b.size.width;
+
+    pixel *pa = [a pixels4];
+    pixel *pb = [[b clippedBy:CGRectMake(0, 0,  1, hb)] pixels4];
+
+    // Try several different changes int X position, seeing what the DTW
+    // distance is.  The dx with the minimum DTW distance is probably the best.
+    int min_score = INT_MAX;
+    int min_dx = 0;
+    for(int dx = wai-1; dx >= 0; dx--) {
+        int score = dtw_distance((unsigned int)hbi, pa, pb, 32);
+        if (score < min_score) {
+            min_score = score;
+            min_dx = dx;
+        }
+        pa += hai;
+    }
+    return CGPointMake(min_dx, /* //TODO//: */0);
+}
+
 @end
 
