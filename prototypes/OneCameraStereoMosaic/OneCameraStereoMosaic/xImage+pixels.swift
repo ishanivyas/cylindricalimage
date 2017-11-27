@@ -20,7 +20,7 @@ extension UIImage {
                                  width: size.width, height: size.height))        
         return pixelData
     }
-
+/*-
     func pixels4() -> [UInt8]? {
         guard let i = self.cgImage else { return nil }
         let w       = self.size.width  ;   let wi = i.width
@@ -38,7 +38,7 @@ extension UIImage {
         ctx?.draw(i, in: CGRect(x:0, y:0, width:w, height:h))
         return pixels
     }
-
+-*/
     static func from(bytes b:UnsafeMutableRawPointer, width w:Int, height h:Int, _ bpp:Int) -> UIImage? {
         let l          = w*h
         let data       = NSData(bytesNoCopy:b, length:l)
