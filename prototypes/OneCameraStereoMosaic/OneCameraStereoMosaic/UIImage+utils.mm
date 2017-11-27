@@ -39,8 +39,8 @@
     return img;
 }
 
-- (CGFloat)width { return CGImageGetWidth(self.CGImage); }  // OR self.size.width?
-- (CGFloat)height { return CGImageGetHeight(self.CGImage); }   // OR self.size.height?
+- (size_t)width { return CGImageGetWidth(self.CGImage); }  // OR self.size.width?
+- (size_t)height { return CGImageGetHeight(self.CGImage); }   // OR self.size.height?
 
 - (CGRect)rect {
     CGImageRef i = self.CGImage;
@@ -143,6 +143,23 @@
     CGContextRelease(ctx);
     CGColorSpaceRelease(colorSpace);
     return pixels;
+}
+
+- (pixel*)pixels4Transposed {
+    auto hai = self.height, wai = self.width;
+    pixel *I = [self pixels4];
+    pixel *T = new pixel[wai*hai];
+    for(int i = 0; i < hai; i++)
+        for(int j = 0; j < wai; j++)
+            T[j*hai + i] = I[i*wai + j];
+    return T;
+}
+
+- (UIImage *)transposed {
+    auto hai = self.height, wai = self.width;
+    return [UIImage imageFrom:[self pixels4Transposed]
+                      ofWidth:hai
+                       height:wai];
 }
 
 - (UIImage *)scaledBy:(float)s {

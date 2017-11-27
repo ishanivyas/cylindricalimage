@@ -5,8 +5,8 @@ typedef unsigned pixel;
 @interface UIImage (utils)
 + (instancetype)imageFrom:(pixel*)pixels ofWidth:(int)w height:(int)h;
 
-- (CGFloat)width;
-- (CGFloat)height;
+- (int)width;
+- (int)height;
 - (CGRect)rect;
 
 - (pixel*)pixels4;
@@ -22,6 +22,9 @@ typedef unsigned pixel;
 - (pixel*)pixels4Of:(CGRect)r scaled:(CGFloat)s rotated90:(int)n;
 - (pixel*)pixels4Of:(CGRect)r scaled:(CGFloat)s rotated90:(int)n translated:(CGVector)t;
 
+- (pixel*)pixels4Transposed;
+
+- (UIImage *)transposed;
 - (UIImage *)scaledBy:(float)s;
 - (UIImage *)clippedBy:(CGRect)r;
 - (UIImage *)rotatedBy90:(int)n;

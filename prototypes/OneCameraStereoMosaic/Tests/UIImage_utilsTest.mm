@@ -111,6 +111,13 @@
     XCTFail("This test looks like its passing but it is not.  Use quick-look on the results to see why.");
 }
 
+- (void)testTranspose {
+    UIImage *image = [UIImage imageFrom:pixels ofWidth:W height:H];
+    UIImage *transposed = [image transposed];
+    XCTAssertEqual(image.width, transposed.height);
+    XCTAssertEqual(image.height, transposed.width);
+}
+
 - (void)testRoundtrip {
     UIImage *constructed = [UIImage imageFrom:pixels ofWidth:W height:H];
     pixel *also_pixels = [constructed pixels4];
