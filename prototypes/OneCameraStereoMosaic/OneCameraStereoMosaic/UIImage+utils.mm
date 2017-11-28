@@ -39,6 +39,19 @@
     return img;
 }
 
+- (NSError*)write:(NSString*)filename {
+    NSData *pngData = UIImagePNGRepresentation(self);
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
+                                                         NSUserDomainMask,
+                                                         NO)[0];
+    NSString *file = [[path stringByAppendingPathComponent:filename]
+                            stringByAppendingPathExtension:@"png"];
+    NSLog(@"Writing image to file '%@'", file);
+    NSError *err = nil;
+    [pngData writeToFile:file options:0 error:&err];
+    return err;
+}
+
 - (size_t)width { return CGImageGetWidth(self.CGImage); }  // OR self.size.width?
 - (size_t)height { return CGImageGetHeight(self.CGImage); }   // OR self.size.height?
 

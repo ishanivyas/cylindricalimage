@@ -4,6 +4,7 @@ typedef unsigned pixel;
 
 @interface UIImage (utils)
 + (instancetype)imageFrom:(pixel*)pixels ofWidth:(int)w height:(int)h;
+- (NSError*)write:(NSString*)filename;
 
 - (int)width;
 - (int)height;
