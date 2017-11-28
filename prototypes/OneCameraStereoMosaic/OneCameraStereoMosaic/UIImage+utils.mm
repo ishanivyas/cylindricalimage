@@ -41,9 +41,9 @@
 
 - (NSError*)write:(NSString*)filename {
     NSData *pngData = UIImagePNGRepresentation(self);
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory,
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                          NSUserDomainMask,
-                                                         NO)[0];
+                                                         YES)[0];
     NSString *file = [[path stringByAppendingPathComponent:filename]
                             stringByAppendingPathExtension:@"png"];
     NSLog(@"Writing image to file '%@'", file);
