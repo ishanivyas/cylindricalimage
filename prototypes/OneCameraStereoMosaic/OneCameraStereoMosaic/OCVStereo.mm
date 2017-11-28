@@ -50,42 +50,51 @@
     }
     
     // Test to see if the image is not different enough before keeping it.
-#   if defined(SKIP_FALSE_MOTION)
-    double d = cv::norm(l.cvMat3, lft.cvMat3) + cv::norm(r.cvMat3, rgt.cvMat3);
-    double n = l.size.width*l.size.height + r.size.width*r.size.height;
-#   if defined(USE_LOG_OF_CHANGED_PIXELS_FOR_MOTION_DETECTION)
-    d = std::log2l(d);
-    n = std::log2l(cv::norm(l.cvMat3) + cv::norm(r.cvMat3));
-#   endif
-
-    if ((d/n) < 0.15
-        && self->lastLeft
-        && self->lastRight) {
-        return 0.0;
+#   if SKIP_FALSE_MOTION
+    double d = 1.0, n = 1.0;
+    if (self->lastLeft && self->lastRight) {  // Only skip motion if there was a previous set of left and right images to compare to.
+        d = cv::norm(l.cvMat3, left[left.size()-1]) + cv::norm(r.cvMat3, right[right.size()-1]);
+        n = l.size.width*l.size.height + r.size.width*r.size.height;
+#       if USE_LOG_OF_CHANGED_PIXELS_FOR_MOTION_DETECTION
+        d = std::log2l(d);
+        n = std::log2l(cv::norm(l.cvMat3) + cv::norm(r.cvMat3));
+#       endif
+        if ((d/n) < 0.15) {
+            return 0.0;
+        }
     }
 #   endif
     
     // The change in view was signifcant enough to keep it.
 
+#   if DRAW_MATCHES
+    static int i = -1;
+    i++;
+    cv::Mat viz;
+#   endif
+
 #   if STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
     // If this is not the first image, find a Homography that maps it to the
     // last image.
-#   if DRAW_MATCHES
-    cv::Mat viz;
-#   endif
+    cv::Mat H;
     cv::Mat next = src.cvMat3;
     if (!last.empty()) {
-        cv::Mat H;
         Stitcher::findHomographyMatrix(last, next, H
 #                                      if DRAW_MATCHES
                                        , &viz
 #                                      endif
                                        );
-        if (H.empty()) return 0.0;
-        std::cout << H << std::endl;
-        Hs.push_back(H);
+        if (!H.empty()) {
+            Hs.push_back(H);
+            last = next; // Save the full image so we can calculate the next Homography.
+            std::cout << H << std::endl;
+        } else {
+            std::cout << "H is empty." << std::endl;
+#           if DRAW_MATCHES
+            return 0.0; // Nothing to match up with and we are not saving the image.
+#           endif
+        }
     }
-    last = next; // Save the full image so we can calculate the next Homography.
 #   else
     // DTW align
     if (lastLft && lastRgt) {
@@ -96,13 +105,20 @@
 
 #   if DRAW_MATCHES
     {
-        auto i = left.size();
-        [slimg write:[NSString stringWithFormat:@"_left%03lu",  i]];
-        [srimg write:[NSString stringWithFormat:@"_right%03lu", i]];
+        [slimg write:[NSString stringWithFormat:@"_left%03d",  i]];
+        [srimg write:[NSString stringWithFormat:@"_right%03d", i]];
         if (i < 30) {
-            [src write:[NSString stringWithFormat:@"_full%03lu", i]];
-            [[UIImage imageFrom:viz] write:[NSString stringWithFormat:@"_matches%03lu", i]];
+            [src write:[NSString stringWithFormat:@"_full%03d", i]];
+            if (!viz.empty()) {
+                [[UIImage imageFrom:viz] write:[NSString stringWithFormat:@"_matches%03d", i]];
+            }
         }
+    }
+#   endif
+
+#   if STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
+    if (H.empty()) {
+        return 0.0;
     }
 #   endif
 
@@ -116,7 +132,7 @@
     self->lastLeft = lft;
     self->lastRight = rgt;
 
-#   if defined(SKIP_FALSE_MOTION)
+#   if SKIP_FALSE_MOTION
     return d / n;
 #   else
     return 1.0;
