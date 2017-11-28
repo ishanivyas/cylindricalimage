@@ -100,9 +100,17 @@ void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv
     }
 
     // Find correspondence between the descriptors using k-nearest-neighbors.
-    cv::BFMatcher bf;
     DescriptorMatches matches;
+#   if MATCHER == FLANN_MATCHER
+    cv::FlannBasedMatcher flann(cv::makePtr<cv::flann::KDTreeIndexParams>(/*trees:*/5),
+                                cv::makePtr<cv::flann::SearchParams>(/*checks:*/50,
+                                                                     /*epsilon:*/0,
+                                                                     /*sorted:*/true));
+    flann.knnMatch(des1, des2, matches, 3);
+#   else
+    cv::BFMatcher bf;
     bf.knnMatch(des1, des2, matches, 3);
+#   endif
     if (matches.size() < 4) {
         return;
     }
