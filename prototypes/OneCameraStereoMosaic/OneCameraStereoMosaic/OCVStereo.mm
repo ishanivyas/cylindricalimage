@@ -70,21 +70,41 @@
 #   if STITCHER == FULL_HOMOGRAPHY_APPLIED_TO_STRIPS
     // If this is not the first image, find a Homography that maps it to the
     // last image.
+#   if DRAW_MATCHES
+    cv::Mat viz;
+#   endif
     cv::Mat next = src.cvMat3;
     if (!last.empty()) {
         cv::Mat H;
-        Stitcher::findHomographyMatrix(last, next, H);
+        Stitcher::findHomographyMatrix(last, next, H
+#                                      if DRAW_MATCHES
+                                       , &viz
+#                                      endif
+                                       );
         if (H.empty()) return 0.0;
         std::cout << H << std::endl;
         Hs.push_back(H);
     }
     last = next; // Save the full image so we can calculate the next Homography.
-#   endif
-
+#   else
+    // DTW align
     if (lastLft && lastRgt) {
         auto lftDelta = [self align:slimg relativeTo:lastLft];
         auto rgtDelta = [self align:srimg relativeTo:lastRgt];
     }
+#   endif
+
+#   if DRAW_MATCHES
+    {
+        auto i = left.size();
+        [slimg write:[NSString stringWithFormat:@"_left%03lu",  i]];
+        [srimg write:[NSString stringWithFormat:@"_right%03lu", i]];
+        if (i < 30) {
+            [src write:[NSString stringWithFormat:@"_full%03lu", i]];
+            [[UIImage imageFrom:viz] write:[NSString stringWithFormat:@"_matches%03lu", i]];
+        }
+    }
+#   endif
 
     // Save the image strips and their matrices for later stitching.
     lastLft = slimg;

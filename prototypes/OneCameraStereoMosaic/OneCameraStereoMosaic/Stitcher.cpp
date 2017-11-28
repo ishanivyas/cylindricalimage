@@ -81,7 +81,7 @@ void Stitcher::mergeImageIntoPano(cv::InputArray img, cv::InputArray pano,
     warped.copyTo(out);
 }
 
-void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv::Mat &H) {
+void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv::Mat &H, cv::Mat *viz) {
     // Find keypoints and their descriptors for each image using ORB.               // Defaults:
     cv::Ptr<cv::ORB> detector = cv::ORB::create(    /*nFeatures:*/800,              // 500
                                                   /*scaleFactor:*/1.1414213,        // 1.2
@@ -107,9 +107,11 @@ void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv
                                                                      /*epsilon:*/0,
                                                                      /*sorted:*/true));
     flann.knnMatch(des1, des2, matches, 3);
-#   else
+#   elif MATCHER == BRUTE_FORCE_MATCHER
     cv::BFMatcher bf;
     bf.knnMatch(des1, des2, matches, 3);
+#   else
+#   error "No MATCHER selected.  To fix this, modify config.h."
 #   endif
     if (matches.size() < 4) {
         return;
@@ -121,6 +123,10 @@ void Stitcher::findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv
     if (p1.size() < 4) {
         return;
     }
+
+#   if DRAW_MATCHES
+    cv::drawMatches(img1, kp1, img2, kp2, matches, *viz);
+#   endif
 
     H = cv::findHomography(p1, p2,
                            cv::RANSAC, /*RANSACreprojThresh:*/5.0

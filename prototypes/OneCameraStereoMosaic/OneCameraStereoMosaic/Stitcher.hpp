@@ -22,7 +22,7 @@ namespace Stitcher {
     void filterMatchesAndExtractPoints(KeyPoints &kp1, KeyPoints &kp2, DescriptorMatches &matches, double threshold, ImgCoords &p1, ImgCoords &p2);
     void findWarpSizeAndMin(cv::InputArray img1, cv::InputArray img2, cv::Mat &H, cv::Mat &W, cv::Size &S, cv::Point &MIN);
     void mergeImageIntoPano(cv::InputArray img, cv::InputArray pano, cv::Mat &W, cv::Size &S, cv::Point &MIN, cv::OutputArray out);
-    void findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv::Mat &H);
+    void findHomographyMatrix(cv::InputArray img1, cv::InputArray img2, cv::Mat &H, cv::Mat *viz=NULL);
 };
 
 #endif /* Stitcher_hpp */
