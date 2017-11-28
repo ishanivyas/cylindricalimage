@@ -1,28 +1,43 @@
 import UIKit
+import ARKit
+import SceneKit
 import AVFoundation
 
-class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
-    let band_width = 256.0
+class ViewController: PortraitViewController,
+                      AVCaptureVideoDataOutputSampleBufferDelegate,
+                      ARSCNViewDelegate {
     var stereo : OCVStereo!
-    
+
+    // AVCapture Stuff
     var previewLayer:CALayer!
     let captureSession = AVCaptureSession()
     var captureDevice:AVCaptureDevice!
     var dataOutput:AVCaptureVideoDataOutput!
-    
-    @IBOutlet var scanView : ScanView?
-    @IBOutlet var startButton : UIButton!
-    
     var started = false
-    
+
+    @IBOutlet var scanView : ScanView?      // Visualizes the bands we are capturing.
+    @IBOutlet var startButton : UIButton!   // Starts slicing out the bands.
+
+    // AR Tracking state
+    @IBOutlet var sceneView: ARSCNView!
+    var startPosition: SCNVector3!
+    var distance: Float!
+    var trackingState: ARCamera.TrackingState!
+    var box: Box!
+
     var nFrames : UInt64 = 0
     var lastFrameAt_ns : UInt64 = 0
     var avgInterFrameDelay_ns : UInt64 = 0
     var maxInterFrameDelay_ns : UInt64 = 0
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        theARViewDidLoad()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.stereo = OCVStereo(stripWidth: 8, forScale: 1.0)
+        self.stereo = OCVStereo(stripWidth: 1, forScale: 1.0)
 
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         if let availableDevices = AVCaptureDeviceDiscoverySession(
@@ -40,8 +55,14 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
 
             startPreview()
             configureOutput()
-            startSession()
+            startAVCaptureSession()
+            startAR()
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        pauseAR()
     }
     
     func configureOutput() {
@@ -53,6 +74,33 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         dataOutput.alwaysDiscardsLateVideoFrames = true
     }
     
+    func theARViewDidLoad() {
+        NSLog("theARViewDidLoad")
+        box = Box()
+        box.isHidden = true;
+        sceneView.scene.rootNode.addChildNode(box)
+        distance = 0.0
+    }
+    
+    func startAR() {
+        if ARWorldTrackingConfiguration.isSupported {
+            NSLog("startAR: ARWorldTrackingConfiguration")
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.planeDetection = .horizontal
+            sceneView.session.run(configuration)
+        } else {
+            NSLog("startAR: AROrientationTrackingConfiguration")
+            let configuration = AROrientationTrackingConfiguration()
+            configuration.isLightEstimationEnabled = false
+            sceneView.session.run(configuration)
+        }
+    }
+    
+    func pauseAR() {
+        NSLog("pauseAR")
+        sceneView.session.pause()
+    }
+
     // Setup preview layer so that a running capture session can place live
     // imagery into the UI.
     func startPreview() {
@@ -71,23 +119,28 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     }
 
     // Start capturing the data from the camera and put it into our dataOutput.
-    func startSession() {
+    func startAVCaptureSession() {
         if captureSession.canAddOutput(dataOutput) {
             captureSession.addOutput(dataOutput)
             captureSession.commitConfiguration()
             captureSession.startRunning()
         }
+
+        box.update(minExtents: SCNVector3Zero, maxExtents: SCNVector3Zero)
+        box.isHidden = false
+        startPosition = nil
+        distance = 0.0
     }
 
     // Stop data from reaching the dataOutput.
-    func stopSession() {
+    func stopAVCaptureSession() {
         captureSession.stopRunning()
         captureSession.removeOutput(dataOutput)
         captureSession.commitConfiguration()
     }
 
     // Start accumulating data into our separate mosaics.
-    func startCapture() {
+    func startMosaicCapture() {
         dataOutput.setSampleBufferDelegate(
             self,
             queue: DispatchQueue(label: "edu.berkeley.captureQueue")
@@ -95,7 +148,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
     }
 
     // Stop accumulating data into our separate mosaics.
-    func stopCapture() {
+    func stopMosaicCapture() {
         dataOutput.setSampleBufferDelegate(nil, queue: nil)
     }
 
@@ -104,7 +157,7 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         if (!started) {
             // New state is "not started".  Stop capturing, stitch, and present
             // the images we constructed.
-            stopCapture()
+            stopMosaicCapture()
             startPreview()
             
             // Present some statistics and reset them for a new capture.
@@ -136,10 +189,11 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
                 self.startButton.titleLabel?.text = "Cap..."
             }
             stopPreview()
-            startCapture()
+            startMosaicCapture()
         }
     }
     
+    // CAPTURE DELEGATE
     // Function to accumulate images for later stitching.  We want to keep this
     // quick because we want low inter-frame delays.
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
@@ -192,6 +246,43 @@ class ViewController: PortraitViewController, AVCaptureVideoDataOutputSampleBuff
         }
         return nil
     }
+
+    /* ********************************************************************** */
+    // ARSCNViewDelegate?
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        NSLog("ARsession?")
+        trackingState = camera.trackingState
+    }
+    // ARSCNViewDelegate
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        NSLog("ARSCNViewDelegate::renderer")
+        DispatchQueue.main.async {
+            self.visualizeCaptureBandsInScene()
+        }
+    }
+
+    func visualizeCaptureBandsInScene() {
+        let screenCenter : CGPoint = CGPoint(x: self.sceneView.bounds.midX, y: self.sceneView.bounds.midY)
+        let planeTestResults = sceneView.hitTest(screenCenter, types: [.existingPlaneUsingExtent])
+        if let result = planeTestResults.first {
+            if started {
+                NSLog("visualizeCaptureBandsInScene")
+                let worldPosition = SCNVector3Make(result.worldTransform.columns.3.x, result.worldTransform.columns.3.y, result.worldTransform.columns.3.z)
+                if startPosition == nil {
+                    startPosition = worldPosition
+                    box.position = worldPosition
+                }
+                
+                distance = (startPosition! - worldPosition).normL2()
+                box.resizeTo(extent: distance)
+                
+                let theta = horizontalAngleBetween(a:startPosition!, b:worldPosition)
+                box.rotation = SCNVector4(x: 0, y: 1, z: 0, w: -(theta + Float.pi))
+            }
+        }
+    }
+
+    /* ********************************************************************** */
 
     func describe(_ image:UIImage, _ prefix:String) {
         let h = image.cgImage!.height

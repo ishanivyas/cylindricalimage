@@ -27,6 +27,10 @@
 		966DD1731FCB5DA400A6CBF5 /* UIImage_utilsTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 966DD1721FCB5DA400A6CBF5 /* UIImage_utilsTest.mm */; };
 		966DD1771FCB709500A6CBF5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966DD1751FCB707D00A6CBF5 /* CoreGraphics.framework */; };
 		966DD1781FCB709A00A6CBF5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 966DD1761FCB707D00A6CBF5 /* UIKit.framework */; };
+		969CC5281FCBDFCD000F22CE /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CC5271FCBDFCD000F22CE /* Box.swift */; };
+		969CC53C1FCC016F000F22CE /* MahonyAHRS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 969CC5351FCC016F000F22CE /* MahonyAHRS.cpp */; };
+		969CC53E1FCC016F000F22CE /* MadgwickSensorFusion.m in Sources */ = {isa = PBXBuildFile; fileRef = 969CC5391FCC016F000F22CE /* MadgwickSensorFusion.m */; };
+		969CC5421FCC0BC4000F22CE /* IMU.m in Sources */ = {isa = PBXBuildFile; fileRef = 969CC5401FCC0BC4000F22CE /* IMU.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +75,15 @@
 		966DD1721FCB5DA400A6CBF5 /* UIImage_utilsTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UIImage_utilsTest.mm; sourceTree = "<group>"; };
 		966DD1751FCB707D00A6CBF5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		966DD1761FCB707D00A6CBF5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		969CC5271FCBDFCD000F22CE /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		969CC5341FCC016F000F22CE /* MadgwickSensorFusion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MadgwickSensorFusion.h; sourceTree = "<group>"; };
+		969CC5351FCC016F000F22CE /* MahonyAHRS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MahonyAHRS.cpp; sourceTree = "<group>"; };
+		969CC5361FCC016F000F22CE /* MahonyAHRS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MahonyAHRS.h; sourceTree = "<group>"; };
+		969CC5391FCC016F000F22CE /* MadgwickSensorFusion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MadgwickSensorFusion.m; sourceTree = "<group>"; };
+		969CC53B1FCC016F000F22CE /* MadgwickAHRS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MadgwickAHRS.h; sourceTree = "<group>"; };
+		969CC53F1FCC0BC4000F22CE /* IMUDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMUDelegate.h; sourceTree = "<group>"; };
+		969CC5401FCC0BC4000F22CE /* IMU.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMU.m; sourceTree = "<group>"; };
+		969CC5411FCC0BC4000F22CE /* IMU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMU.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +135,7 @@
 				96092F3A1FB8DD6300415B4C /* PreView.swift */,
 				96092F391FB8DD6300415B4C /* ScanView.swift */,
 				96092F3D1FB8DD8300415B4C /* xImage+pixels.swift */,
+				969CC5271FCBDFCD000F22CE /* Box.swift */,
 				966DD12A1FCA604700A6CBF5 /* config.h */,
 				966DD12C1FCA888800A6CBF5 /* dtw.h */,
 				966DD12B1FCA888800A6CBF5 /* dtw.mm */,
@@ -135,6 +149,7 @@
 				96092F501FC0223000415B4C /* UIImage+cvMat.mm */,
 				96092F531FC10BBC00415B4C /* UIImage+utils.h */,
 				96092F541FC10BBC00415B4C /* UIImage+utils.mm */,
+				969CC5331FCC016F000F22CE /* MadgwickAHRS */,
 				96092F2B1FB8DCE900415B4C /* Main.storyboard */,
 				96092F2E1FB8DCE900415B4C /* Assets.xcassets */,
 				96092F301FB8DCE900415B4C /* LaunchScreen.storyboard */,
@@ -161,6 +176,21 @@
 				966DD1761FCB707D00A6CBF5 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		969CC5331FCC016F000F22CE /* MadgwickAHRS */ = {
+			isa = PBXGroup;
+			children = (
+				969CC53B1FCC016F000F22CE /* MadgwickAHRS.h */,
+				969CC5411FCC0BC4000F22CE /* IMU.h */,
+				969CC5401FCC0BC4000F22CE /* IMU.m */,
+				969CC53F1FCC0BC4000F22CE /* IMUDelegate.h */,
+				969CC5341FCC016F000F22CE /* MadgwickSensorFusion.h */,
+				969CC5391FCC016F000F22CE /* MadgwickSensorFusion.m */,
+				969CC5351FCC016F000F22CE /* MahonyAHRS.cpp */,
+				969CC5361FCC016F000F22CE /* MahonyAHRS.h */,
+			);
+			path = MadgwickAHRS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,15 +297,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				969CC5421FCC0BC4000F22CE /* IMU.m in Sources */,
 				96092F521FC0223100415B4C /* UIImage+cvMat.mm in Sources */,
 				96092F2A1FB8DCE900415B4C /* ViewController.swift in Sources */,
 				96092F551FC10BBC00415B4C /* UIImage+utils.mm in Sources */,
 				96092F3E1FB8DD8300415B4C /* xImage+pixels.swift in Sources */,
 				96092F281FB8DCE900415B4C /* AppDelegate.swift in Sources */,
+				969CC53C1FCC016F000F22CE /* MahonyAHRS.cpp in Sources */,
+				969CC53E1FCC016F000F22CE /* MadgwickSensorFusion.m in Sources */,
 				966DD12D1FCA888800A6CBF5 /* dtw.mm in Sources */,
 				966DD1271FCA041E00A6CBF5 /* Stitcher.cpp in Sources */,
 				96092F4F1FC020FB00415B4C /* OCVStereo.mm in Sources */,
 				96092F401FB9079E00415B4C /* PortraitView.swift in Sources */,
+				969CC5281FCBDFCD000F22CE /* Box.swift in Sources */,
 				96092F3C1FB8DD6300415B4C /* PreView.swift in Sources */,
 				96092F3B1FB8DD6300415B4C /* ScanView.swift in Sources */,
 			);

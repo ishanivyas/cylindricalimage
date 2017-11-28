@@ -22,9 +22,9 @@ typedef unsigned pixel;
 - (pixel*)pixels4Of:(CGRect)r scaled:(CGFloat)s rotated90:(int)n;
 - (pixel*)pixels4Of:(CGRect)r scaled:(CGFloat)s rotated90:(int)n translated:(CGVector)t;
 
-- (pixel*)pixels4Transposed;
+- (pixel*)pixels4Transposed; // helps with DTW
 
-- (UIImage *)transposed;
+- (UIImage *)transposed;  // helps with DTW
 - (UIImage *)scaledBy:(float)s;
 - (UIImage *)clippedBy:(CGRect)r;
 - (UIImage *)rotatedBy90:(int)n;
