@@ -1,11 +1,8 @@
 import UIKit
-import ARKit
-import SceneKit
 import AVFoundation
 
 class ViewController: PortraitViewController,
-                      AVCaptureVideoDataOutputSampleBufferDelegate,
-                      ARSCNViewDelegate {
+                      AVCaptureVideoDataOutputSampleBufferDelegate {
     var stereo : OCVStereo!
 
     // AVCapture Stuff
@@ -18,13 +15,6 @@ class ViewController: PortraitViewController,
     @IBOutlet var scanView : ScanView?      // Visualizes the bands we are capturing.
     @IBOutlet var startButton : UIButton!   // Starts slicing out the bands.
 
-    // AR Tracking state
-    @IBOutlet var sceneView: ARSCNView!
-    var startPosition: SCNVector3!
-    var distance: Float!
-    var trackingState: ARCamera.TrackingState!
-    var box: Box!
-
     var nFrames : UInt64 = 0
     var lastFrameAt_ns : UInt64 = 0
     var avgInterFrameDelay_ns : UInt64 = 0
@@ -32,7 +22,6 @@ class ViewController: PortraitViewController,
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        theARViewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -56,13 +45,11 @@ class ViewController: PortraitViewController,
             startPreview()
             configureOutput()
             startAVCaptureSession()
-            startAR()
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        pauseAR()
     }
     
     func configureOutput() {
@@ -72,33 +59,6 @@ class ViewController: PortraitViewController,
                 NSNumber(value:kCVPixelFormatType_32BGRA)
         ]
         dataOutput.alwaysDiscardsLateVideoFrames = true
-    }
-    
-    func theARViewDidLoad() {
-        NSLog("theARViewDidLoad")
-        box = Box()
-        box.isHidden = true;
-        sceneView.scene.rootNode.addChildNode(box)
-        distance = 0.0
-    }
-    
-    func startAR() {
-        if ARWorldTrackingConfiguration.isSupported {
-            NSLog("startAR: ARWorldTrackingConfiguration")
-            let configuration = ARWorldTrackingConfiguration()
-            configuration.planeDetection = .horizontal
-            sceneView.session.run(configuration)
-        } else {
-            NSLog("startAR: AROrientationTrackingConfiguration")
-            let configuration = AROrientationTrackingConfiguration()
-            configuration.isLightEstimationEnabled = false
-            sceneView.session.run(configuration)
-        }
-    }
-    
-    func pauseAR() {
-        NSLog("pauseAR")
-        sceneView.session.pause()
     }
 
     // Setup preview layer so that a running capture session can place live
@@ -125,11 +85,6 @@ class ViewController: PortraitViewController,
             captureSession.commitConfiguration()
             captureSession.startRunning()
         }
-
-        box.update(minExtents: SCNVector3Zero, maxExtents: SCNVector3Zero)
-        box.isHidden = false
-        startPosition = nil
-        distance = 0.0
     }
 
     // Stop data from reaching the dataOutput.
@@ -245,41 +200,6 @@ class ViewController: PortraitViewController,
             return UIImage(cgImage: cgImage!)
         }
         return nil
-    }
-
-    /* ********************************************************************** */
-    // ARSCNViewDelegate?
-    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        NSLog("ARsession?")
-        trackingState = camera.trackingState
-    }
-    // ARSCNViewDelegate
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        NSLog("ARSCNViewDelegate::renderer")
-        DispatchQueue.main.async {
-            self.visualizeCaptureBandsInScene()
-        }
-    }
-
-    func visualizeCaptureBandsInScene() {
-        let screenCenter : CGPoint = CGPoint(x: self.sceneView.bounds.midX, y: self.sceneView.bounds.midY)
-        let planeTestResults = sceneView.hitTest(screenCenter, types: [.existingPlaneUsingExtent])
-        if let result = planeTestResults.first {
-            if started {
-                NSLog("visualizeCaptureBandsInScene")
-                let worldPosition = SCNVector3Make(result.worldTransform.columns.3.x, result.worldTransform.columns.3.y, result.worldTransform.columns.3.z)
-                if startPosition == nil {
-                    startPosition = worldPosition
-                    box.position = worldPosition
-                }
-                
-                distance = (startPosition! - worldPosition).normL2()
-                box.resizeTo(extent: distance)
-                
-                let theta = horizontalAngleBetween(a:startPosition!, b:worldPosition)
-                box.rotation = SCNVector4(x: 0, y: 1, z: 0, w: -(theta + Float.pi))
-            }
-        }
     }
 
     /* ********************************************************************** */
