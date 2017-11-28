@@ -165,8 +165,10 @@ class ViewController: PortraitViewController,
         }
 
         // Update the UI
-        self.scanView?.left = rot90(dup(self.stereo.lastLeft()))
-        self.scanView?.right = rot90(dup(self.stereo.lastRight()))
+        if self.stereo.lastLeft() != nil && self.stereo.lastRight() != nil {
+            self.scanView?.left = rot90(dup(self.stereo.lastLeft()))
+            self.scanView?.right = rot90(dup(self.stereo.lastRight()))
+        }
 
         DispatchQueue.main.async {
             self.stereo.lastLeft()
